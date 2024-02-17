@@ -15,7 +15,7 @@ clock = pygame.time.Clock()  # アプリケーションの時間進行を監視�
 
 # ゲーム内で動くオブジェクトを用意
 camera = camera.Camera(pygame.Vector2(0, 0), screen_size)
-player = player.Player(pygame.Vector2(screen_size / 2))
+player = player.Player(pygame.Vector2(screen_size / 2), camera.scroll_velocity)
 enemies = []
 for _ in range(30):
     enemies.append(enemy.Enemy())

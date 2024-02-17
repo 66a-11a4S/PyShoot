@@ -2,20 +2,19 @@ import pygame
 import player
 import enemy
 import camera
+import app_setting
 
 
-frame_rate = 60
-screen_size = pygame.Vector2(640, 480)
-bg_fill_color = pygame.Color(128, 128, 128)
+app = app_setting.AppSetting()
 
 # pygame のセットアップ
 pygame.init()
-screen = pygame.display.set_mode(screen_size)
+screen = pygame.display.set_mode(app.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
 # ゲーム内で動くオブジェクトを用意
-camera = camera.Camera(pygame.Vector2(0, 0), screen_size)
-player = player.Player(pygame.Vector2(screen_size / 2), camera.scroll_velocity)
+camera = camera.Camera(pygame.Vector2(0, 0), app.screen_size)
+player = player.Player(pygame.Vector2(app.screen_size / 2), camera.scroll_velocity)
 enemies = []
 for _ in range(30):
     enemies.append(enemy.Enemy())
@@ -35,7 +34,7 @@ while running:
             running = False
 
     # 前のフレームの描画を塗りつぶして消す
-    screen.fill(bg_fill_color)
+    screen.fill(app.bg_fill_color)
 
     for go in game_objects:
         go.update(dt)
@@ -55,6 +54,6 @@ while running:
 
     # このメソッドを毎フレーム呼び出す. 引数を指定するとフレームレートの上限を設定できる.
     # 戻り値: 前回の呼び出しから何秒が経過したか
-    dt = clock.tick(frame_rate) / 1000
+    dt = clock.tick(app.frame_rate) / 1000
 
 pygame.quit()

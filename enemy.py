@@ -1,8 +1,9 @@
 import random
 import pygame
+import game_object
 
 
-class Enemy:
+class Enemy(game_object.GameObject):
     def __init__(self):
         self.position = pygame.Vector2(random.randint(0, 640), random.randint(0, 480))
         self.shape = pygame.Rect(self.position, pygame.Vector2(32, 32))

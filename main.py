@@ -20,6 +20,9 @@ enemies = []
 for _ in range(30):
     enemies.append(enemy.Enemy())
 
+game_objects = [camera, player]
+game_objects.extend(enemies)
+
 # 前フレームから何ミリ秒経過したか
 dt = 0
 
@@ -34,16 +37,13 @@ while running:
     # 前のフレームの描画を塗りつぶして消す
     screen.fill(bg_fill_color)
 
-    camera.update(dt)
-    player.update(dt)
-    for enemy in enemies:
-        enemy.update(dt)
+    for go in game_objects:
+        go.update(dt)
 
     camera_pos = camera.position
 
-    player.draw(screen, camera_pos)
-    for enemy in enemies:
-        enemy.draw(screen, camera_pos)
+    for go in game_objects:
+        go.draw(screen, camera_pos)
 
     # スコアを表示する
     font = pygame.font.Font(None, 30)

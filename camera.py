@@ -1,7 +1,7 @@
-import pygame
+import game_object
 
 
-class Camera:
+class Camera(game_object.GameObject):
     def __init__(self, upper_left, size):
         self.position = upper_left
         self.size = size

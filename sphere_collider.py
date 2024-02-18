@@ -3,10 +3,10 @@ import pygame
 
 
 class SphereCollider(collider.Collider):
-    def __init__(self, position, radius, on_intersected):
+    def __init__(self, position, radius, on_intersected, layer):
         self._radius = radius
         size = pygame.Vector2(radius, radius)
-        super().__init__(position, size, on_intersected)
+        super().__init__(position, size, on_intersected, layer)
 
     def closest_position(self, position):
         # 中心から目標までのベクトルを出す

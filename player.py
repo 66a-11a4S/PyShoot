@@ -2,6 +2,7 @@ import pygame
 import game_object
 import sphere_collider
 # import box_collider
+from collision_layer import CollisionLayer
 
 
 class Player(game_object.GameObject):
@@ -14,7 +15,8 @@ class Player(game_object.GameObject):
         self.scroll_velocity = scroll_velocity
         self.screen_size = screen_size
         self._previous_camera_position = pygame.Vector2()
-        self.collider = sphere_collider.SphereCollider(self.position, self.shape, self.on_intersected)
+        self.collider = sphere_collider.SphereCollider(self.position, self.shape, self.on_intersected,
+                                                       CollisionLayer.Player)
 #        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
         self._intersecting = False
 

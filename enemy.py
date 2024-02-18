@@ -2,14 +2,14 @@ import random
 import pygame
 import game_object
 import box_collider
-
+from collision_layer import CollisionLayer
 
 class Enemy(game_object.GameObject):
     def __init__(self):
         self.position = pygame.Vector2(random.randint(0, 640), random.randint(0, 480))
         self._size = pygame.Vector2(32, 32)
         self.material = pygame.Color(255, 128, 128)
-        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
+        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
         self._intersecting = False
 
     def update(self, dt):

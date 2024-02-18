@@ -1,8 +1,9 @@
 class Collider:
-    def __init__(self, position, size, on_intersected):
+    def __init__(self, position, size, on_intersected, layer):
         self._center = position
         self._size = size
         self.enabled = True
+        self.layer = layer
         self._on_intersected = on_intersected
 
     def sync_position(self, position):

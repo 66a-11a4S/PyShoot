@@ -3,8 +3,8 @@ import pygame
 
 
 class BoxCollider(collider.Collider):
-    def __init__(self, position, size, on_intersected):
-        super().__init__(position, size, on_intersected)
+    def __init__(self, position, size, on_intersected, layer):
+        super().__init__(position, size, on_intersected, layer)
 
     def closest_position(self, position):
         self_min = self.get_min()

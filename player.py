@@ -1,6 +1,7 @@
 import pygame
 import game_object
 import sphere_collider
+# import box_collider
 
 
 class Player(game_object.GameObject):
@@ -8,11 +9,13 @@ class Player(game_object.GameObject):
         self.position = position
         self.material = pygame.Color(128, 128, 255)
         self.shape = 32  # circle radius
+#        self._size = pygame.Vector2(32, 32)
         self.move_speed = 256
         self.scroll_velocity = scroll_velocity
         self.screen_size = screen_size
         self._previous_camera_position = pygame.Vector2()
         self.collider = sphere_collider.SphereCollider(self.position, self.shape, self.on_intersected)
+#        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
         self._intersecting = False
 
     def update(self, dt):
@@ -54,6 +57,12 @@ class Player(game_object.GameObject):
 
         mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
         pygame.draw.circle(screen, mat, player_view_position, self.shape)
+
+#        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
+#        min_pos = self.position - self._size / 2
+#        enemy_view_pos = min_pos - camera_position
+#        rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
+#        pygame.draw.rect(screen, mat, rect)
 
     def on_intersected(self, _):
         self._intersecting = True

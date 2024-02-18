@@ -3,6 +3,7 @@ import player
 import enemy
 import camera
 import app_setting
+import collision_manager
 
 
 app = app_setting.AppSetting()
@@ -16,16 +17,18 @@ clock = pygame.time.Clock()  # アプリケーションの時間進行を監視�
 camera = camera.Camera(pygame.Vector2(0, 0), app.screen_size)
 player = player.Player(pygame.Vector2(app.screen_size / 2), camera.scroll_velocity, app.screen_size)
 enemies = []
-for _ in range(30):
+for _ in range(10):
     enemies.append(enemy.Enemy())
 
 game_objects = [camera, player]
 game_objects.extend(enemies)
 
-player_collider = player.collider
-enemy_colliders = []
+colliders = [player.collider]
 for enemy in enemies:
-    enemy_colliders.append(enemy.collider)
+    colliders.append(enemy.collider)
+
+collision_manager = collision_manager.CollisionManager()
+collision_manager.setup(colliders)
 
 # 前フレームから何ミリ秒経過したか
 dt = 0
@@ -44,10 +47,7 @@ while running:
     for go in game_objects:
         go.update(dt)
 
-    for enemy in enemies:
-        if player.collider.intersected(enemy.collider):
-            player.collider.invoke_intersected(enemy)
-            enemy.collider.invoke_intersected(player)
+    collision_manager.collision_check()
 
     camera_pos = camera.position
 

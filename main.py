@@ -22,6 +22,11 @@ for _ in range(30):
 game_objects = [camera, player]
 game_objects.extend(enemies)
 
+player_collider = player.collider
+enemy_colliders = []
+for enemy in enemies:
+    enemy_colliders.append(enemy.collider)
+
 # 前フレームから何ミリ秒経過したか
 dt = 0
 
@@ -38,6 +43,11 @@ while running:
 
     for go in game_objects:
         go.update(dt)
+
+    for enemy in enemies:
+        if player.collider.intersected(enemy.collider):
+            player.collider.invoke_intersected(enemy)
+            enemy.collider.invoke_intersected(player)
 
     camera_pos = camera.position
 

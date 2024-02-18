@@ -1,5 +1,6 @@
 import pygame
 import game_object
+import sphere_collider
 
 
 class Player(game_object.GameObject):
@@ -11,8 +12,14 @@ class Player(game_object.GameObject):
         self.scroll_velocity = scroll_velocity
         self.screen_size = screen_size
         self._previous_camera_position = pygame.Vector2()
+        self.collider = sphere_collider.SphereCollider(self.position, self.shape, self.on_intersected)
+        self._intersecting = False
 
     def update(self, dt):
+
+        # reset state
+        self._intersecting = False
+
         velocity = self.scroll_velocity * dt
 
         # プレイヤーが移動できる画面内の領域
@@ -44,5 +51,9 @@ class Player(game_object.GameObject):
     def draw(self, screen, camera_position):
         self._previous_camera_position = camera_position
         player_view_position = self.position - camera_position
-        pygame.draw.circle(screen, self.material, player_view_position, self.shape)
 
+        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
+        pygame.draw.circle(screen, mat, player_view_position, self.shape)
+
+    def on_intersected(self, _):
+        self._intersecting = True

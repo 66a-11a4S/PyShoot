@@ -1,6 +1,6 @@
 import pygame
 
-import game_object
+from game_objects import game_object
 
 
 class Camera(game_object.GameObject):

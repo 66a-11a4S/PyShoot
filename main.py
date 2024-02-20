@@ -1,8 +1,6 @@
 import pygame
-import player
-import enemy
-import camera
 import app_setting
+from game_objects import enemy, camera, player
 from collision import collision_manager
 
 app = app_setting.AppSetting()

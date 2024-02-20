@@ -1,6 +1,6 @@
 import random
 import pygame
-import game_object
+from game_objects import game_object
 from collision import box_collider
 from collision.collision_layer import CollisionLayer
 

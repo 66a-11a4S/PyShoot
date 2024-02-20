@@ -5,6 +5,7 @@ from game_objects import game_object
 
 class Camera(game_object.GameObject):
     def __init__(self, upper_left, size):
+        super().__init__()
         self.position = upper_left
         self.size = size
         self.scroll_velocity = pygame.Vector2(32, 0)

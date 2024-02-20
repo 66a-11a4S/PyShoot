@@ -7,6 +7,7 @@ from game_objects import game_object
 
 class Bullet(game_object.GameObject):
     def __init__(self, start_at, size, velocity, is_player_bullet):
+        super().__init__()
         self._velocity = velocity
         self.position = start_at
         self.is_player_bullet = is_player_bullet
@@ -18,6 +19,7 @@ class Bullet(game_object.GameObject):
 
     def on_intersected(self, _):
         self.collider.enabled = False
+        self.enabled = False
 
     def update(self, dt):
         self.position += self._velocity * dt

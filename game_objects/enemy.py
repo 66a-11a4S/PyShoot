@@ -7,6 +7,7 @@ from collision.collision_layer import CollisionLayer
 
 class Enemy(game_object.GameObject):
     def __init__(self):
+        super().__init__()
         self.position = pygame.Vector2(random.randint(0, 640), random.randint(0, 480))
         self._size = pygame.Vector2(32, 32)
         self.material = pygame.Color(255, 128, 128)
@@ -25,5 +26,8 @@ class Enemy(game_object.GameObject):
         mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
         pygame.draw.rect(screen, mat, rect)
 
-    def on_intersected(self, _):
+    def on_intersected(self, collider):
         self._intersecting = True
+        if collider.layer == CollisionLayer.PlayerShot:
+            self.enabled = False
+            self.collider.enabled = False

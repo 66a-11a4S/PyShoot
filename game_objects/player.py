@@ -7,6 +7,7 @@ from collision.collision_layer import CollisionLayer
 
 class Player(game_object.GameObject):
     def __init__(self, position, scroll_velocity, screen_size):
+        super().__init__()
         self.position = position
         self.material = pygame.Color(128, 128, 255)
         self.shape = 32  # circle radius

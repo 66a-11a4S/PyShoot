@@ -1,4 +1,7 @@
 class GameObject:
+    def __init__(self):
+        self.enabled = True
+
     def update(self, dt):
         pass
 

@@ -3,8 +3,7 @@ import player
 import enemy
 import camera
 import app_setting
-import collision_manager
-
+from collision import collision_manager
 
 app = app_setting.AppSetting()
 

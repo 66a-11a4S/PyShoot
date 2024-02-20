@@ -1,8 +1,8 @@
 import pygame
 import game_object
-import sphere_collider
-# import box_collider
-from collision_layer import CollisionLayer
+from collision import sphere_collider
+# from collision import box_collider
+from collision.collision_layer import CollisionLayer
 
 
 class Player(game_object.GameObject):

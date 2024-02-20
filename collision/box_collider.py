@@ -1,4 +1,4 @@
-import collider
+from collision import collider
 import pygame
 
 

@@ -1,8 +1,8 @@
 import random
 import pygame
 import game_object
-import box_collider
-from collision_layer import CollisionLayer
+from collision import box_collider
+from collision.collision_layer import CollisionLayer
 
 
 class Enemy(game_object.GameObject):

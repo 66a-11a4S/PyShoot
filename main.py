@@ -1,7 +1,8 @@
 import pygame
 import app_setting
-from game_objects import enemy, camera, player, bullet
+from game_objects import enemy, camera, player
 from collision import collision_manager
+from game_objects.game_object_manager import GameObjectManager
 
 app = app_setting.AppSetting()
 
@@ -14,27 +15,12 @@ clock = pygame.time.Clock()  # アプリケーションの時間進行を監視�
 camera = camera.Camera(pygame.Vector2(0, 0), app.screen_size)
 player = player.Player(pygame.Vector2(app.screen_size / 2), camera.scroll_velocity, app.screen_size)
 enemies = []
-for _ in range(10):
+for _ in range(100):
     enemies.append(enemy.Enemy())
-
-player_bullets = []
-for idx in range(30):
-    pos = pygame.Vector2(player.position)
-    pos.x = 0
-    pos += pygame.Vector2(idx * 16, idx * 16)
-    size = pygame.Vector2(16, 16)
-    velocity = pygame.Vector2(32, 0)
-    player_bullets.append(bullet.Bullet(pos, size, velocity, is_player_bullet=True))
-
-game_objects = [camera, player]
-game_objects.extend(enemies)
-game_objects.extend(player_bullets)
 
 colliders = [player.collider]
 for enemy in enemies:
     colliders.append(enemy.collider)
-for bullet in player_bullets:
-    colliders.append(bullet.collider)
 
 collision_manager = collision_manager.CollisionManager()
 collision_manager.setup(colliders)
@@ -42,6 +28,7 @@ collision_manager.setup(colliders)
 # 前フレームから何ミリ秒経過したか
 dt = 0
 
+manager = GameObjectManager()
 running = True
 while running:
     # event のポーリング
@@ -53,7 +40,9 @@ while running:
     # 前のフレームの描画を塗りつぶして消す
     screen.fill(app.bg_fill_color)
 
-    for go in game_objects:
+    manager.update()
+
+    for go in manager.instances:
         if go.enabled:
             go.update(dt)
 
@@ -61,7 +50,7 @@ while running:
 
     camera_pos = camera.position
 
-    for go in game_objects:
+    for go in manager.instances:
         if go.enabled:
             go.draw(screen, camera_pos)
 

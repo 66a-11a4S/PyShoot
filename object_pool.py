@@ -29,3 +29,5 @@ class ObjectPool:
             instance = self.instance_factory()
             self.not_used.append(instance)
             self.current_size += 1
+
+        print(f"pool extended: {self.current_size}")

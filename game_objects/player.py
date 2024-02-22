@@ -28,7 +28,6 @@ class Player(game_object.GameObject):
         self._shoot_timer = 0.0
 
     def update(self, dt):
-
         # reset state
         self._intersecting = False
 
@@ -52,7 +51,6 @@ class Player(game_object.GameObject):
         self._intersecting = True
 
     def update_position(self, keys, dt):
-
         velocity = pygame.Vector2()
 
         # プレイヤーが移動できる画面内の領域
@@ -94,4 +92,5 @@ class Player(game_object.GameObject):
 
     def shoot(self):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(self.position), pygame.Vector2(512, 0), pygame.Vector2(16, 16), True)
+        instance.setup(pygame.Vector2(self.position), pygame.Vector2(512, 0), pygame.Vector2(16, 16), True,
+                       self._bullet_pool)

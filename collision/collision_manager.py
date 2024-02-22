@@ -1,6 +1,9 @@
+from collision.collider_pool import ColliderPool
+
+
 class CollisionManager:
     def __init__(self):
-        self._colliders = []
+        self._colliders = ColliderPool()
         self._collision_matrix = [
             [False, False, True, True],   # Player vs ...
             [False, False, True, False],  # PlayerShot vs ...
@@ -8,17 +11,16 @@ class CollisionManager:
             [True, False, False, False]   # EnemyShot vs ...
         ]
 
-    def setup(self, colliders):
-        self._colliders = colliders
-
     def collision_check(self):
-        for i in range(len(self._colliders)):
-            for k in range(i, len(self._colliders)):
+        self._colliders.update()
+        colliders = self._colliders.instances
+        for i in range(len(colliders)):
+            for k in range(i, len(colliders)):
                 if i == k:
                     continue
 
-                colA = self._colliders[i]
-                colB = self._colliders[k]
+                colA = colliders[i]
+                colB = colliders[k]
 
                 if not self.need_collision_check(colA, colB):
                     continue

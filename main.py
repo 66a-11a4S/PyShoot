@@ -18,12 +18,7 @@ enemies = []
 for _ in range(100):
     enemies.append(enemy.Enemy())
 
-colliders = [player.collider]
-for enemy in enemies:
-    colliders.append(enemy.collider)
-
 collision_manager = collision_manager.CollisionManager()
-collision_manager.setup(colliders)
 
 # 前フレームから何ミリ秒経過したか
 dt = 0

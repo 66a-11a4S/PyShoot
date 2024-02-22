@@ -7,6 +7,8 @@ from object_pool import ObjectPool
 
 
 class Player(game_object.GameObject):
+    _shoot_interval = 0.05
+
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
         self.position = position
@@ -23,11 +25,33 @@ class Player(game_object.GameObject):
 
         bullet_factory = lambda: bullet.Bullet()
         self._bullet_pool = ObjectPool(bullet_factory, init_size=64)
+        self._shoot_timer = 0.0
 
     def update(self, dt):
 
         # reset state
         self._intersecting = False
+
+        keys = pygame.key.get_pressed()
+        self.update_position(keys, dt)
+        self.update_shoot(keys, dt)
+
+    def draw(self, screen, camera_position):
+        player_view_position = self.position
+
+        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
+        pygame.draw.circle(screen, mat, player_view_position, self.shape)
+
+#        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
+#        min_pos = self.position - self._size / 2
+#        enemy_view_pos = min_pos
+#        rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
+#        pygame.draw.rect(screen, mat, rect)
+
+    def on_intersected(self, _):
+        self._intersecting = True
+
+    def update_position(self, keys, dt):
 
         velocity = pygame.Vector2()
 
@@ -35,7 +59,6 @@ class Player(game_object.GameObject):
         boundary_max = self.screen_size + velocity
         boundary_min = velocity
 
-        keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             velocity.y -= self.move_speed * dt
         if keys[pygame.K_s]:
@@ -55,26 +78,20 @@ class Player(game_object.GameObject):
         if moved_position.y < boundary_min.y:
             velocity.y = boundary_min.y - self.position.y
 
-        if keys[pygame.K_SPACE]:
-            self.shoot()
-
         self.position += velocity
 
-    def draw(self, screen, camera_position):
-        player_view_position = self.position
+    def update_shoot(self, keys, dt):
+        if keys[pygame.K_SPACE]:
+            if self._shoot_timer == 0.0:
+                self.shoot()
 
-        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
-        pygame.draw.circle(screen, mat, player_view_position, self.shape)
+            self._shoot_timer += dt
 
-#        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
-#        min_pos = self.position - self._size / 2
-#        enemy_view_pos = min_pos
-#        rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
-#        pygame.draw.rect(screen, mat, rect)
-
-    def on_intersected(self, _):
-        self._intersecting = True
+            if self._shoot_interval < self._shoot_timer:
+                self._shoot_timer = 0.0
+        else:
+            self._shoot_timer = 0.0
 
     def shoot(self):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(self.position), pygame.Vector2(256, 0), pygame.Vector2(16, 16), True)
+        instance.setup(pygame.Vector2(self.position), pygame.Vector2(512, 0), pygame.Vector2(16, 16), True)

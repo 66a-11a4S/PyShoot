@@ -1,8 +1,9 @@
 import pygame
-from game_objects import game_object
+from game_objects import game_object, bullet
 from collision import sphere_collider
 # from collision import box_collider
 from collision.collision_layer import CollisionLayer
+from object_pool import ObjectPool
 
 
 class Player(game_object.GameObject):
@@ -19,6 +20,9 @@ class Player(game_object.GameObject):
                                                        CollisionLayer.Player)
 #        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
         self._intersecting = False
+
+        bullet_factory = lambda: bullet.Bullet()
+        self._bullet_pool = ObjectPool(bullet_factory, init_size=64)
 
     def update(self, dt):
 
@@ -51,6 +55,9 @@ class Player(game_object.GameObject):
         if moved_position.y < boundary_min.y:
             velocity.y = boundary_min.y - self.position.y
 
+        if keys[pygame.K_SPACE]:
+            self.shoot()
+
         self.position += velocity
 
     def draw(self, screen, camera_position):
@@ -67,3 +74,7 @@ class Player(game_object.GameObject):
 
     def on_intersected(self, _):
         self._intersecting = True
+
+    def shoot(self):
+        instance = self._bullet_pool.rent()
+        instance.setup(pygame.Vector2(self.position), pygame.Vector2(256, 0), pygame.Vector2(16, 16), True)

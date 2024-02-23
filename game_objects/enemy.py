@@ -1,5 +1,11 @@
 import random
 import pygame
+
+from enemy_patterns.interval_pattern import IntervalPattern
+from enemy_patterns.move_patterns.chase import Chase
+from enemy_patterns.move_patterns.horizontal_move import HorizontalMove
+from enemy_patterns.move_patterns.vertical_chase import VerticalChase
+from enemy_patterns.move_patterns.wave import Wave
 from game_objects import game_object
 from collision import box_collider
 from collision.collision_layer import CollisionLayer
@@ -13,11 +19,19 @@ class Enemy(game_object.GameObject):
         self.material = pygame.Color(255, 128, 128)
         self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
         self._intersecting = False
-        self._velocity = pygame.Vector2(-32, 0)
+
+        interval = 1
+        # move_pattern = HorizontalMove(-64)
+        # move_pattern = Wave(-64, 256, interval)
+        # move_pattern = Chase(self.position, target_position=pygame.Vector2(320, 320), speed=1, stop_distance=64)
+        move_pattern = VerticalChase(self.position, target_position=pygame.Vector2(0, 320),
+                                     velocity=pygame.Vector2(-256, 32))
+        self._move_pattern = IntervalPattern(interval, move_pattern.move)
 
     def update(self, dt):
         self._intersecting = False
-        self.position += self._velocity * dt
+        velocity = self._move_pattern.update(dt)
+        self.position += velocity * dt
 
     def draw(self, screen, camera_position):
         min_pos = self.position - self._size / 2

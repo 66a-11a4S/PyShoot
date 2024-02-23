@@ -23,8 +23,7 @@ class Player(game_object.GameObject):
 #        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
         self._intersecting = False
 
-        bullet_factory = lambda: bullet.Bullet()
-        self._bullet_pool = ObjectPool(bullet_factory, init_size=64)
+        self._bullet_pool = ObjectPool(lambda: bullet.Bullet(), init_size=64)
         self._shoot_timer = 0.0
 
     def update(self, dt):

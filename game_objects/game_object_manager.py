@@ -11,6 +11,7 @@ class GameObjectManager:
             cls.remove_requested = []
         return cls._instance
 
+    # @property 属性をつけると getter としてみなされ、関数呼び出しの () をつけずに値を参照できる
     @property
     def instances(self):
         return self.actual_instance + self.add_requested

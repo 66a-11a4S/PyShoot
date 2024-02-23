@@ -1,21 +1,18 @@
 import pygame
 
 
-class AppSetting:
-    def __init__(self):
-        self._frame_rate = 60
-        self._screen_size = pygame.Vector2(640, 480)
-        self._bg_fill_color = pygame.Color(128, 128, 128)
+frame_rate = 60
+screen_size = pygame.Vector2(640, 480)
+bg_fill_color = pygame.Color(128, 128, 128)
 
-    # @property 属性をつけると getter としてみなされ、関数呼び出しの () をつけずに値を参照できる
-    @property
-    def frame_rate(self):
-        return self._frame_rate
 
-    @property
-    def screen_size(self):
-        return self._screen_size
-
-    @property
-    def bg_fill_color(self):
-        return self._bg_fill_color
+def is_in_screen(position):
+    if position.x < 0:
+        return False
+    if position.y < 0:
+        return False
+    if screen_size.x < position.x:
+        return False
+    if screen_size.y < position.y:
+        return False
+    return True

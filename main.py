@@ -4,18 +4,16 @@ from game_objects import enemy, camera, player
 from collision import collision_manager
 from game_objects.game_object_manager import GameObjectManager
 
-app = app_setting.AppSetting()
-
 # pygame のセットアップ
 pygame.init()
-screen = pygame.display.set_mode(app.screen_size)
+screen = pygame.display.set_mode(app_setting.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
 # ゲーム内で動くオブジェクトを用意
-camera = camera.Camera(pygame.Vector2(0, 0), app.screen_size)
-player = player.Player(pygame.Vector2(app.screen_size / 2), camera.scroll_velocity, app.screen_size)
+camera = camera.Camera(pygame.Vector2(0, 0), app_setting.screen_size)
+player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scroll_velocity, app_setting.screen_size)
 enemies = []
-for _ in range(100):
+for _ in range(1):
     enemies.append(enemy.Enemy())
 
 collision_manager = collision_manager.CollisionManager()
@@ -33,7 +31,7 @@ while running:
             running = False
 
     # 前のフレームの描画を塗りつぶして消す
-    screen.fill(app.bg_fill_color)
+    screen.fill(app_setting.bg_fill_color)
 
     manager.update()
 
@@ -59,6 +57,6 @@ while running:
 
     # このメソッドを毎フレーム呼び出す. 引数を指定するとフレームレートの上限を設定できる.
     # 戻り値: 前回の呼び出しから何秒が経過したか
-    dt = clock.tick(app.frame_rate) / 1000
+    dt = clock.tick(app_setting.frame_rate) / 1000
 
 pygame.quit()

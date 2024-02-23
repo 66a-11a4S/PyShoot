@@ -1,5 +1,6 @@
 import pygame
 
+import app_setting
 from collision.collision_layer import CollisionLayer
 from collision.sphere_collider import SphereCollider
 from game_objects import game_object
@@ -34,8 +35,7 @@ class Bullet(game_object.GameObject):
         self.disable()
 
     def update(self, dt):
-        view_position = self.position - self._previous_camera_position
-        if 640 < view_position.x:
+        if not app_setting.is_in_screen(self.position):
             self.disable()
             return
 

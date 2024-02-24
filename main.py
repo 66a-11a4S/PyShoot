@@ -3,6 +3,7 @@ import random
 import pygame
 import app_setting
 from enemy_patterns.enemy_factory import EnemyFactory
+from enemy_patterns.enemy_type import EnemyType
 from game_objects import camera, player
 from collision import collision_manager
 from game_objects.game_object_manager import GameObjectManager
@@ -18,9 +19,12 @@ player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scrol
 
 enemy_factory = EnemyFactory(player)
 enemies = []
-for _ in range(1):
-    position = pygame.Vector2(320, 240)
-    enemies.append(enemy_factory.create(position, 6))
+for _ in range(30):
+    x = random.randint(0, 320)
+    y = random.randint(0, 240)
+    enemy_type = random.randint(0, EnemyType.VerticalChase2.value[0])
+    position = pygame.Vector2(320 + x, 120 + y)
+    enemies.append(enemy_factory.create(position, enemy_type))
 
 collision_manager = collision_manager.CollisionManager()
 

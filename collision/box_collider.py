@@ -34,11 +34,11 @@ class BoxCollider(collider.Collider):
     def debug_draw(self, screen):
         min_pos = self.get_min()
         max_pos = self.get_max()
-        debug_rect = pygame.Rect(left=min_pos.x, top=max_pos.y, width=self._size.x, height=self._size.y)
+        debug_rect = pygame.Rect(left=min_pos.x, top=max_pos.y, width=self.size.x, height=self.size.y)
         pygame.draw.rect(screen, pygame.Color(255, 128, 128), debug_rect)
 
     def get_min(self):
-        return self._center - self._size / 2
+        return self.center - self.size / 2
 
     def get_max(self):
-        return self._center + self._size / 2
+        return self.center + self.size / 2

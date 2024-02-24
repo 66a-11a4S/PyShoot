@@ -10,24 +10,24 @@ class SphereCollider(collider.Collider):
 
     def closest_position(self, position):
         # 中心から目標までのベクトルを出す
-        vec = position - self._center
+        vec = position - self.center
         # ベクトルの長さを円の半径でクランプ
         length = min(vec.length, self._radius)
         # 円の中心からベクトルの長さ分進んだ位置まで進める
-        return self._center + vec.normalize * length
+        return self.center + vec.normalize * length
 
     # ダブルディスパッチ使うにも python ってオーバーロードできるのか? -> できない
     def intersected(self, coll):
         return coll.intersected_with_sphere(self)
 
     def intersected_with_sphere(self, sphere):
-        vec = (sphere._center - self._center)
+        vec = (sphere.center - self.center)
         return vec.length() <= (sphere._radius + self._radius)
 
     def intersected_with_rect(self, rect):
-        closest_point_on_rect = rect.closest_position(self._center)
-        vec = closest_point_on_rect - self._center
+        closest_point_on_rect = rect.closest_position(self.center)
+        vec = closest_point_on_rect - self.center
         return vec.length() <= self._radius
 
     def debug_draw(self, screen):
-        pygame.draw.circle(screen, center=self._center, radius=self._radius, color=pygame.Color(128, 128, 255))
+        pygame.draw.circle(screen, center=self.center, radius=self._radius, color=pygame.Color(128, 128, 255))

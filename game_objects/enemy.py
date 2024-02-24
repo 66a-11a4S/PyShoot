@@ -26,6 +26,7 @@ class Enemy(game_object.GameObject):
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern
 
+        self.collider.center = position
         self.collider.enabled = True
         self.enabled = True
 

@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class EnemyType(Enum):
-    Blank = 0
+    Blank = 0,
     Horizontal = 1,  # 横一直線 + 正面
     Horizontal2 = 2,  # 横一直線 + 3way
     Wavy = 3,  # 波形 + 正面

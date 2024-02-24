@@ -1,6 +1,9 @@
+import random
+
 import pygame
 import app_setting
-from game_objects import enemy, camera, player
+from enemy_patterns.enemy_factory import EnemyFactory
+from game_objects import camera, player
 from collision import collision_manager
 from game_objects.game_object_manager import GameObjectManager
 
@@ -12,9 +15,12 @@ clock = pygame.time.Clock()  # アプリケーションの時間進行を監視�
 # ゲーム内で動くオブジェクトを用意
 camera = camera.Camera(pygame.Vector2(0, 0), app_setting.screen_size)
 player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scroll_velocity, app_setting.screen_size)
+
+enemy_factory = EnemyFactory(player)
 enemies = []
 for _ in range(1):
-    enemies.append(enemy.Enemy())
+    position = pygame.Vector2(320, 240)
+    enemies.append(enemy_factory.create(position, 6))
 
 collision_manager = collision_manager.CollisionManager()
 

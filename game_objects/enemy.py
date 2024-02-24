@@ -1,47 +1,38 @@
-import random
 import pygame
-
-from enemy_patterns.interval_pattern import IntervalPattern
-from enemy_patterns.move_patterns.chase import Chase
-from enemy_patterns.move_patterns.horizontal_move import HorizontalMove
-from enemy_patterns.move_patterns.vertical_chase import VerticalChase
-from enemy_patterns.move_patterns.wavy import Wavy
-from enemy_patterns.shoot_patterns.straight import Straight
-from enemy_patterns.shoot_patterns.target_centric import TargetCentric
 from game_objects import game_object
 from collision import box_collider
 from collision.collision_layer import CollisionLayer
-from game_objects.bullet import Bullet
-from object_pool import ObjectPool
 
 
 class Enemy(game_object.GameObject):
-    def __init__(self):
+    def __init__(self, bullet_pool):
         super().__init__()
-        self.position = pygame.Vector2(random.randint(320, 640), random.randint(0, 480))
+        self._bullet_pool = bullet_pool
         self._size = pygame.Vector2(32, 32)
         self.material = pygame.Color(255, 128, 128)
+
+        self.position = pygame.Vector2()
+        self._move_pattern = None
+        self._shoot_pattern = None
         self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
-        self._intersecting = False
 
-        move_interval = 3
-        # move_pattern = HorizontalMove(-16.0)
-        move_pattern = Wavy(-16, 64, move_interval)
-        # move_pattern = Chase(self.position, target_position=pygame.Vector2(320, 320), speed=1, stop_distance=64)
-        # move_pattern = VerticalChase(self.position, target_position=pygame.Vector2(0, 320),
-        #                              velocity=pygame.Vector2(-256, 32))
-        self._move_pattern = IntervalPattern(move_interval, move_pattern.move)
+        self.disable()
 
-        shoot_interval = 0.5
-        shoot_pattern = TargetCentric(shoot_interval, self.position, target_position=pygame.Vector2(0, 320), speed=128,
-                                      ways=1, angle=0)
-        # shoot_pattern = Straight(shoot_interval, self.position, speed=128, ways=15, angle=15)
-        self._shoot_pattern = IntervalPattern(shoot_interval, shoot_pattern.shoot)
-        self._bullet_pool = ObjectPool(lambda: Bullet())
+        self._player_pos = pygame.Vector2()
+        self._move = pygame.Vector2()
+
+    def setup(self, position, move_pattern, shoot_pattern, player_pos):
+        self.position = position
+        self._move_pattern = move_pattern
+        self._shoot_pattern = shoot_pattern
+        self._player_pos = player_pos
+
+        self.collider.enabled = True
+        self.enabled = True
 
     def update(self, dt):
-        self._intersecting = False
         velocity = self._move_pattern.update(dt)
+        self._move = velocity
         self.position += velocity * dt
 
         shoot_requests = self._shoot_pattern.update(dt)
@@ -52,15 +43,18 @@ class Enemy(game_object.GameObject):
         min_pos = self.position - self._size / 2
         enemy_view_pos = min_pos
         rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
-        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
-        pygame.draw.rect(screen, mat, rect)
+        pygame.draw.rect(screen, self.material, rect)
+        pygame.draw.line(screen, pygame.Color(255, 0, 0), self.position, self._player_pos)
+        pygame.draw.line(screen, pygame.Color(0, 0, 0), self.position, self.position + self._move)
 
     def on_intersected(self, collider):
-        self._intersecting = True
         if collider.layer == CollisionLayer.PlayerShot:
-            self.enabled = False
-            self.collider.enabled = False
+            self.disable()
 
     def shoot(self, vec):
         instance = self._bullet_pool.rent()
         instance.setup(pygame.Vector2(self.position), vec, pygame.Vector2(4, 4), False, self._bullet_pool)
+
+    def disable(self):
+        self.collider.enabled = False
+        self.enabled = False

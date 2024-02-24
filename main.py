@@ -1,5 +1,3 @@
-import os
-
 import pygame
 import app_setting
 from enemy_patterns.enemy_factory import EnemyFactory
@@ -19,10 +17,10 @@ camera = camera.Camera(pygame.Vector2(0, 0), app_setting.screen_size)
 player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scroll_velocity, app_setting.screen_size)
 
 enemy_factory = EnemyFactory(player)
-print(os.getcwd())
 tiles = []
 
 # with でスコープを抜けるとき自動で dispose 処理が走る
+# パスの位置は os.getcwd で確認できる
 with open("resource/stage.csv") as f:
     for s in f.readlines():
         char_row = s.rstrip().replace(' ', '').split(',')

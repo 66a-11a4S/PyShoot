@@ -22,7 +22,7 @@ enemies = []
 for _ in range(30):
     x = random.randint(0, 320)
     y = random.randint(0, 240)
-    enemy_type = random.randint(0, EnemyType.VerticalChase2.value[0])
+    enemy_type = random.randint(1, EnemyType.VerticalChase2.value[0])
     position = pygame.Vector2(320 + x, 120 + y)
     enemies.append(enemy_factory.create(position, enemy_type))
 

@@ -1,12 +1,13 @@
-import random
+import os
 
 import pygame
 import app_setting
 from enemy_patterns.enemy_factory import EnemyFactory
-from enemy_patterns.enemy_type import EnemyType
 from game_objects import camera, player
 from collision import collision_manager
 from game_objects.game_object_manager import GameObjectManager
+from stage.Field import Field
+from stage.stage_coordinator import StageCoordinator
 
 # pygame のセットアップ
 pygame.init()
@@ -18,13 +19,19 @@ camera = camera.Camera(pygame.Vector2(0, 0), app_setting.screen_size)
 player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scroll_velocity, app_setting.screen_size)
 
 enemy_factory = EnemyFactory(player)
-enemies = []
-for _ in range(30):
-    x = random.randint(0, 320)
-    y = random.randint(0, 240)
-    enemy_type = random.randint(1, EnemyType.VerticalChase2.value[0])
-    position = pygame.Vector2(320 + x, 120 + y)
-    enemies.append(enemy_factory.create(position, enemy_type))
+print(os.getcwd())
+tiles = []
+
+# with でスコープを抜けるとき自動で dispose 処理が走る
+with open("resource/stage.csv") as f:
+    for s in f.readlines():
+        char_row = s.rstrip().replace(' ', '').split(',')
+        # いわゆる collection 式. [ ] の中に collection を形成できる式を記述する
+        tiles.append([int(c) for c in char_row])
+
+field = Field(tiles)
+stage_coordinator = StageCoordinator(enemy_factory, field)
+stage_coordinator.setup()
 
 collision_manager = collision_manager.CollisionManager()
 
@@ -42,6 +49,9 @@ while running:
 
     # 前のフレームの描画を塗りつぶして消す
     screen.fill(app_setting.bg_fill_color)
+
+    # ゲームを進行させる
+    stage_coordinator.progress_stage()
 
     manager.update()
 

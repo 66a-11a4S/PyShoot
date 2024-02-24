@@ -6,13 +6,13 @@ screen_size = pygame.Vector2(640, 480)
 bg_fill_color = pygame.Color(128, 128, 128)
 
 
-def is_in_screen(position):
-    if position.x < 0:
+def is_in_screen(position, margin=pygame.Vector2()):
+    if position.x < -margin.x:
         return False
-    if position.y < 0:
+    if position.y < -margin.y:
         return False
-    if screen_size.x < position.x:
+    if screen_size.x + margin.x < position.x:
         return False
-    if screen_size.y < position.y:
+    if screen_size.y + margin.y < position.y:
         return False
     return True

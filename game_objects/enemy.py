@@ -12,6 +12,7 @@ class Enemy(game_object.GameObject):
         self._bullet_pool = bullet_pool
         self._size = pygame.Vector2(32, 32)
         self.material = pygame.Color(255, 128, 128)
+        self._disappear_range_margin = self._size
 
         self.position = pygame.Vector2()
         self._move_pattern = None
@@ -31,6 +32,10 @@ class Enemy(game_object.GameObject):
     def update(self, dt):
         velocity = self._move_pattern.update(dt)
         self.position += velocity * dt
+
+        if not app_setting.is_in_screen(self.position, margin=self._disappear_range_margin):
+            self.disable()
+            return
 
         shoot_requests = self._shoot_pattern.update(dt)
         for request in shoot_requests:

@@ -16,5 +16,4 @@ class Chase:
         if length < self.stop_distance:
             return pygame.Vector2(0, 0)
 
-        print(self._owner_position)
         return vec.normalize() * self._speed

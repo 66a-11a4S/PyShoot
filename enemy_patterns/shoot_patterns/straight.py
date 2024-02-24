@@ -1,10 +1,8 @@
 import math
-
 import pygame
-from enemy_patterns.shoot_patterns.target_centric import TargetCentric
 
 
-class Front(TargetCentric):
+class Straight:
     def __init__(self, interval, owner_position, speed, ways, angle):
         self._interval = interval
         self._owner_position = owner_position

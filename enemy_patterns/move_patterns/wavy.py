@@ -3,7 +3,7 @@ import pygame
 
 
 # 横方向に等速, 縦方向に sin
-class Wave:
+class Wavy:
     def __init__(self, horizontal_speed, amp, duration):
         self._horizontal_speed = horizontal_speed
         self._amp = amp

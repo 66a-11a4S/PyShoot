@@ -5,8 +5,8 @@ from enemy_patterns.interval_pattern import IntervalPattern
 from enemy_patterns.move_patterns.chase import Chase
 from enemy_patterns.move_patterns.horizontal_move import HorizontalMove
 from enemy_patterns.move_patterns.vertical_chase import VerticalChase
-from enemy_patterns.move_patterns.wave import Wave
-from enemy_patterns.shoot_patterns.front import Front
+from enemy_patterns.move_patterns.wavy import Wavy
+from enemy_patterns.shoot_patterns.straight import Straight
 from enemy_patterns.shoot_patterns.target_centric import TargetCentric
 from game_objects import game_object
 from collision import box_collider
@@ -26,7 +26,7 @@ class Enemy(game_object.GameObject):
 
         move_interval = 3
         # move_pattern = HorizontalMove(-16.0)
-        move_pattern = Wave(-16, 64, move_interval)
+        move_pattern = Wavy(-16, 64, move_interval)
         # move_pattern = Chase(self.position, target_position=pygame.Vector2(320, 320), speed=1, stop_distance=64)
         # move_pattern = VerticalChase(self.position, target_position=pygame.Vector2(0, 320),
         #                              velocity=pygame.Vector2(-256, 32))
@@ -35,7 +35,7 @@ class Enemy(game_object.GameObject):
         shoot_interval = 0.5
         shoot_pattern = TargetCentric(shoot_interval, self.position, target_position=pygame.Vector2(0, 320), speed=128,
                                       ways=1, angle=0)
-        # shoot_pattern = Front(shoot_interval, self.position, speed=128, ways=15, angle=15)
+        # shoot_pattern = Straight(shoot_interval, self.position, speed=128, ways=15, angle=15)
         self._shoot_pattern = IntervalPattern(shoot_interval, shoot_pattern.shoot)
         self._bullet_pool = ObjectPool(lambda: Bullet())
 

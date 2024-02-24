@@ -11,4 +11,4 @@ class Wavy:
 
     def move(self, timer):
         y = math.sin(timer / self._duration * math.pi * 2) * self._amp
-        return pygame.Vector2(self._horizontal_speed, y)
+        return pygame.Vector2(-self._horizontal_speed, y)

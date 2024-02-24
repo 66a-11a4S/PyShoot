@@ -7,4 +7,4 @@ class HorizontalMove:
         self._speed = speed
 
     def move(self, _):
-        return pygame.Vector2(self._speed, 0)
+        return pygame.Vector2(-self._speed, 0)

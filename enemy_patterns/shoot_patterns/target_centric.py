@@ -20,11 +20,13 @@ class TargetCentric:
             return requests
 
         if self._ways % 2 == 1:
-            vec = (self._target_position - self._owner_position).normalize() * self._speed
+            raw_vec = (self._target_position - self._owner_position)
+            vec = raw_vec * self._speed / (raw_vec.length() + 0.1)
             requests.append(vec)
 
         for idx in range(1, int(self._ways / 2) + 1):
-            vec = (self._target_position - self._owner_position).normalize() * self._speed
+            raw_vec = (self._target_position - self._owner_position)
+            vec = raw_vec * self._speed / (raw_vec.length() + 0.1)
             angle = self._angle * idx / (self._ways - 1)
             vec_left = pygame.Vector2(vec).rotate_rad(math.pi * angle / 180)
             requests.append(vec_left)

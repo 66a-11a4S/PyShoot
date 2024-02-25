@@ -1,12 +1,14 @@
 import math
 import pygame
+from enemy_patterns.shoot_patterns.shoot_pattern import ShootPattern
 
 
-class Straight:
-    def __init__(self, interval, owner_position, speed, ways, angle):
-        self._interval = interval
-        self._owner_position = owner_position
+# 正面に弾を撃つ
+class Straight(ShootPattern):
+    def __init__(self, speed, interval, ways, angle):
+        super().__init__()
         self._speed = speed
+        self._interval = interval
         self._ways = ways
         self._angle = angle
 

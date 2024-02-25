@@ -1,14 +1,14 @@
-# 特定の位置を基準とする
 import math
 import pygame
+from enemy_patterns.shoot_patterns.shoot_pattern import ShootPattern
 
 
-class TargetCentric:
-    def __init__(self, interval, owner_position, target_position, speed, ways, angle):
-        self._interval = interval
-        self._owner_position = owner_position
-        self._target_position = target_position
+# 特定の位置を基準とする
+class TargetCentric(ShootPattern):
+    def __init__(self, speed, interval, ways, angle):
+        super().__init__()
         self._speed = speed
+        self._interval = interval
         self._ways = ways
         self._angle = angle
 

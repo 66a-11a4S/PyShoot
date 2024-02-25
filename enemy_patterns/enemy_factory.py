@@ -1,5 +1,4 @@
 import copy
-import pygame
 from enemy_patterns.enemy_type import EnemyType
 from enemy_patterns.interval_pattern import IntervalPattern
 from enemy_patterns.move_patterns import *
@@ -15,6 +14,7 @@ class EnemyFactory:
         self._bullet_pool = ObjectPool(lambda: Bullet(), init_size=256)
         self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool))
         self._move_patterns = {}
+        self._shoot_patterns = {}
 
     def build_blueprint(self):
         def get_value(values, idx):
@@ -52,6 +52,30 @@ class EnemyFactory:
 
                 self._move_patterns[enemy_type.value[0]] = move_pattern
 
+        with open("resource/enemy_shoot_pattern.csv") as f:
+            for enemy_type in EnemyType:
+                line = f.readline()
+                # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす
+                if enemy_type == EnemyType.Blank:
+                    continue
+
+                if len(line) == 0:
+                    break
+
+                parameter = line.rstrip().replace(' ', '').split(',')
+                shoot_type = parameter[1]
+                interval = get_value(parameter, 2)
+                speed = get_value(parameter, 3)
+                ways = get_value(parameter, 4)
+                angle = get_value(parameter, 5)
+
+                if shoot_type == "Straight":
+                    shoot_pattern = straight.Straight(speed, interval, ways, angle)
+                elif shoot_type == "TargetCentric":
+                    shoot_pattern = target_centric.TargetCentric(speed, interval, ways, angle)
+
+                self._shoot_patterns[enemy_type.value[0]] = shoot_pattern
+
     def create(self, position, enemy_type):
         instance = self._enemy_pool.rent()
         interval = self.get_interval(enemy_type)
@@ -60,9 +84,11 @@ class EnemyFactory:
         move = copy.deepcopy(self._move_patterns[enemy_type])
         move_pattern = IntervalPattern(interval, move.move)
 
-        shoot_pattern = IntervalPattern(interval, self.create_shoot(position, enemy_type,
-                                                                    interval, player_position).shoot)
+        shoot = copy.deepcopy(self._shoot_patterns[enemy_type])
+        shoot_pattern = IntervalPattern(interval, shoot.shoot)
+
         move.setup(owner_position=position, target_position=player_position)
+        shoot.setup(owner_position=position, target_position=player_position)
         instance.setup(position, move_pattern, shoot_pattern)
 
     def get_interval(self, enemy_type):

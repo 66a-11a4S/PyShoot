@@ -77,15 +77,14 @@ class EnemyFactory:
                 self._shoot_patterns[enemy_type.value[0]] = shoot_pattern
 
     def create(self, position, enemy_type):
-        instance = self._enemy_pool.rent()
-        player_position = self._player.position
-
         move = copy.deepcopy(self._move_patterns[enemy_type])
         move_pattern = IntervalPattern(move.interval, move.move)
 
         shoot = copy.deepcopy(self._shoot_patterns[enemy_type])
         shoot_pattern = IntervalPattern(shoot.interval, shoot.shoot)
 
+        player_position = self._player.position
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
+        instance = self._enemy_pool.rent()
         instance.setup(position, move_pattern, shoot_pattern)

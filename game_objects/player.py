@@ -7,14 +7,14 @@ from object_pool import ObjectPool
 
 
 class Player(game_object.GameObject):
-    _shoot_interval = 0.05
+    _shoot_interval = 0.025
 
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
         self.position = position
         self.material = pygame.Color(128, 128, 255)
-        self.shape = 32  # circle radius
-#        self._size = pygame.Vector2(32, 32)
+        self.shape = 16  # circle radius
+#        self._size = pygame.Vector2(24, 24)
         self.move_speed = 256
         self.scroll_velocity = scroll_velocity
         self.screen_size = screen_size
@@ -80,7 +80,9 @@ class Player(game_object.GameObject):
     def update_shoot(self, keys, dt):
         if keys[pygame.K_SPACE]:
             if self._shoot_timer == 0.0:
-                self.shoot()
+                # 2-way shot
+                self.shoot(self.position + pygame.Vector2(16, -8))
+                self.shoot(self.position + pygame.Vector2(16, 8))
 
             self._shoot_timer += dt
 
@@ -89,7 +91,7 @@ class Player(game_object.GameObject):
         else:
             self._shoot_timer = 0.0
 
-    def shoot(self):
+    def shoot(self, position):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(self.position), pygame.Vector2(512, 0), pygame.Vector2(16, 16), True,
+        instance.setup(pygame.Vector2(position), pygame.Vector2(640, 0), pygame.Vector2(6, 6), True,
                        self._bullet_pool)

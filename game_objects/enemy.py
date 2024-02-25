@@ -10,7 +10,7 @@ class Enemy(game_object.GameObject):
     def __init__(self, bullet_pool):
         super().__init__()
         self._bullet_pool = bullet_pool
-        self._size = pygame.Vector2(32, 32)
+        self._size = pygame.Vector2(24, 24)
         self.material = pygame.Color(255, 128, 128)
         self._disappear_range_margin = self._size
 
@@ -21,7 +21,7 @@ class Enemy(game_object.GameObject):
 
         self.disable()
 
-    def setup(self, position, move_pattern, shoot_pattern, player_pos):
+    def setup(self, position, move_pattern, shoot_pattern):
         self.position = position
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern

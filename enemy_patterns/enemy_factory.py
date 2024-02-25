@@ -23,7 +23,7 @@ class EnemyFactory:
                                                                   interval, player_position).move)
         shoot_pattern = IntervalPattern(interval, self.create_shoot(position, enemy_type,
                                                                     interval, player_position).shoot)
-        instance.setup(position, move_pattern, shoot_pattern, player_position)
+        instance.setup(position, move_pattern, shoot_pattern)
 
     def get_interval(self, enemy_type):
         if enemy_type is EnemyType.Horizontal.value[0]:

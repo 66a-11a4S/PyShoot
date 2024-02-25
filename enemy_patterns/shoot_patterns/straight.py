@@ -6,17 +6,15 @@ from enemy_patterns.shoot_patterns.shoot_pattern import ShootPattern
 # 正面に弾を撃つ
 class Straight(ShootPattern):
     def __init__(self, speed, interval, ways, angle):
-        super().__init__()
+        super().__init__(interval)
         self._speed = speed
-        self._interval = interval
         self._ways = ways
         self._angle = angle
 
     def shoot(self, timer):
         requests = []
 
-        # clamped_timer == interval になった瞬間のみ発射
-        if timer < self._interval:
+        if not self.tick(timer):
             return requests
 
         # 正面を基準に撃つ

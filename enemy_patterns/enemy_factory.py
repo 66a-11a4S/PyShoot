@@ -78,59 +78,14 @@ class EnemyFactory:
 
     def create(self, position, enemy_type):
         instance = self._enemy_pool.rent()
-        interval = self.get_interval(enemy_type)
         player_position = self._player.position
 
         move = copy.deepcopy(self._move_patterns[enemy_type])
-        move_pattern = IntervalPattern(interval, move.move)
+        move_pattern = IntervalPattern(move.interval, move.move)
 
         shoot = copy.deepcopy(self._shoot_patterns[enemy_type])
-        shoot_pattern = IntervalPattern(interval, shoot.shoot)
+        shoot_pattern = IntervalPattern(shoot.interval, shoot.shoot)
 
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
         instance.setup(position, move_pattern, shoot_pattern)
-
-    def get_interval(self, enemy_type):
-        if enemy_type is EnemyType.Horizontal.value[0]:
-            return 1
-        if enemy_type is EnemyType.Horizontal2.value[0]:
-            return 0.5
-        if enemy_type is EnemyType.Wavy.value[0]:
-            return 1
-        if enemy_type is EnemyType.Wavy2.value[0]:
-            return 0.5
-        if enemy_type is EnemyType.Chase.value[0]:
-            return 0.75
-        if enemy_type is EnemyType.Chase2.value[0]:
-            return 0.5
-        if enemy_type is EnemyType.VerticalChase.value[0]:
-            return 0.75
-        if enemy_type is EnemyType.VerticalChase2.value[0]:
-            return 0.5
-
-        return 1
-
-
-    def create_shoot(self, enemy_position, enemy_type, interval, player_position):
-        if enemy_type is EnemyType.Horizontal.value[0]:
-            return straight.Straight(interval, enemy_position, speed=128, ways=1, angle=0)
-        if enemy_type is EnemyType.Horizontal2.value[0]:
-            return straight.Straight(interval, enemy_position, speed=192, ways=3, angle=15)
-        if enemy_type is EnemyType.Wavy.value[0]:
-            return straight.Straight(interval, enemy_position, speed=128, ways=1, angle=0)
-        if enemy_type is EnemyType.Wavy2.value[0]:
-            return straight.Straight(interval, enemy_position, speed=192, ways=3, angle=15)
-        if enemy_type is EnemyType.Chase.value[0]:
-            return target_centric.TargetCentric(interval, enemy_position,
-                                                target_position=player_position, speed=128, ways=1, angle=0)
-        if enemy_type is EnemyType.Chase2.value[0]:
-            return target_centric.TargetCentric(interval, enemy_position,
-                                                target_position=player_position, speed=192, ways=3, angle=15)
-        if enemy_type is EnemyType.VerticalChase.value[0]:
-            return target_centric.TargetCentric(interval, enemy_position,
-                                                target_position=player_position, speed=256, ways=1, angle=0)
-        if enemy_type is EnemyType.VerticalChase2.value[0]:
-            return target_centric.TargetCentric(interval, enemy_position,
-                                                target_position=player_position, speed=312, ways=3, angle=15)
-        return None

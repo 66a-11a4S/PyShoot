@@ -9,8 +9,8 @@ class Wavy(MovePattern):
         super().__init__()
         self._horizontal_speed = horizontal_speed
         self._amp = amp
-        self._duration = duration
+        self.interval = duration
 
     def move(self, timer):
-        y = math.sin(timer / self._duration * math.pi * 2) * self._amp
+        y = math.sin(timer / self.interval * math.pi * 2) * self._amp
         return pygame.Vector2(-self._horizontal_speed, y)

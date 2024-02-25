@@ -10,6 +10,7 @@ class Player(game_object.GameObject):
     _bullet_size = pygame.Vector2(6, 6)
     _bullet_velocity = pygame.Vector2(640, 0)
     _move_speed = 256
+    _player_recover_time = 3
 
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
@@ -20,26 +21,28 @@ class Player(game_object.GameObject):
         self._move_boundary = screen_size
         self.collider = sphere_collider.SphereCollider(self.position, self._shape, self.on_intersected,
                                                        CollisionLayer.Player)
-        self._intersecting = False
+        self._intersected_events = []
+        self._intersected_events.append(self.damaged)
 
         self._bullet_pool = ObjectPool(lambda: bullet.Bullet(), init_size=64)
         self._shoot_timer = 0.0
 
-    def update(self, dt):
-        # reset state
-        self._intersecting = False
+        self._recovering = False
+        self._recover_timer = 0.0
 
+    def update(self, dt):
         keys = pygame.key.get_pressed()
         self.update_position(keys, dt)
         self.update_shoot(keys, dt)
 
     def draw(self, screen, camera_position):
         player_view_position = self.position
-        mat = pygame.Color(0, 0, 0) if self._intersecting else self._material
+        mat = pygame.Color(0, 0, 0) if self._recovering else self._material
         pygame.draw.circle(screen, mat, player_view_position, self._shape)
 
     def on_intersected(self, _):
-        self._intersecting = True
+        for func in self._intersected_events:
+            func()
 
     def update_position(self, keys, dt):
         velocity = pygame.Vector2()
@@ -69,6 +72,14 @@ class Player(game_object.GameObject):
 
         self.position += velocity
 
+        # 無敵復帰処理
+        if self._recovering:
+            self._recover_timer += dt
+            if self._player_recover_time <= self._recover_timer:
+                self._recovering = False
+                self._recover_timer = 0
+                self.collider.enabled = True
+
     def update_shoot(self, keys, dt):
         if keys[pygame.K_SPACE]:
             if self._shoot_timer == 0.0:
@@ -86,3 +97,14 @@ class Player(game_object.GameObject):
     def shoot(self, position):
         instance = self._bullet_pool.rent()
         instance.setup(pygame.Vector2(position), self._bullet_velocity, self._bullet_size, True, self._bullet_pool)
+
+    def damaged(self):
+        self.enabled = False
+        self.collider.enabled = False
+
+    def start_recover(self):
+        self.enabled = True
+        self._recovering = True
+
+    def register_intersected(self, func):
+        self._intersected_events.append(func)

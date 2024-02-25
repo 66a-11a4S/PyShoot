@@ -1,5 +1,4 @@
 import pygame
-
 import app_setting
 from game_objects import game_object
 from collision import box_collider
@@ -7,10 +6,12 @@ from collision.collision_layer import CollisionLayer
 
 
 class Enemy(game_object.GameObject):
+    _size = pygame.Vector2(24, 24)
+    _bullet_size = pygame.Vector2(4, 4)
+
     def __init__(self, bullet_pool):
         super().__init__()
         self._bullet_pool = bullet_pool
-        self._size = pygame.Vector2(24, 24)
         self.material = pygame.Color(255, 128, 128)
         self._disappear_range_margin = self._size
 
@@ -54,7 +55,7 @@ class Enemy(game_object.GameObject):
 
     def shoot(self, vec):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(self.position), vec, pygame.Vector2(4, 4), False, self._bullet_pool)
+        instance.setup(pygame.Vector2(self.position), vec, self._bullet_size, False, self._bullet_pool)
 
     def disable(self):
         self.collider.enabled = False

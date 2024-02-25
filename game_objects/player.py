@@ -1,26 +1,25 @@
 import pygame
 from game_objects import game_object, bullet
 from collision import sphere_collider
-# from collision import box_collider
 from collision.collision_layer import CollisionLayer
 from object_pool import ObjectPool
 
 
 class Player(game_object.GameObject):
     _shoot_interval = 0.025
+    _bullet_size = pygame.Vector2(6, 6)
+    _bullet_velocity = pygame.Vector2(640, 0)
+    _move_speed = 256
 
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
         self.position = position
-        self.material = pygame.Color(128, 128, 255)
-        self.shape = 16  # circle radius
-#        self._size = pygame.Vector2(24, 24)
-        self.move_speed = 256
-        self.scroll_velocity = scroll_velocity
-        self.screen_size = screen_size
-        self.collider = sphere_collider.SphereCollider(self.position, self.shape, self.on_intersected,
+        self._material = pygame.Color(128, 128, 255)
+        self._shape = 16  # circle radius
+        self._scroll_velocity = scroll_velocity
+        self._move_boundary = screen_size
+        self.collider = sphere_collider.SphereCollider(self.position, self._shape, self.on_intersected,
                                                        CollisionLayer.Player)
-#        self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected)
         self._intersecting = False
 
         self._bullet_pool = ObjectPool(lambda: bullet.Bullet(), init_size=64)
@@ -36,15 +35,8 @@ class Player(game_object.GameObject):
 
     def draw(self, screen, camera_position):
         player_view_position = self.position
-
-        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
-        pygame.draw.circle(screen, mat, player_view_position, self.shape)
-
-#        mat = pygame.Color(0, 0, 0) if self._intersecting else self.material
-#        min_pos = self.position - self._size / 2
-#        enemy_view_pos = min_pos
-#        rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
-#        pygame.draw.rect(screen, mat, rect)
+        mat = pygame.Color(0, 0, 0) if self._intersecting else self._material
+        pygame.draw.circle(screen, mat, player_view_position, self._shape)
 
     def on_intersected(self, _):
         self._intersecting = True
@@ -52,18 +44,18 @@ class Player(game_object.GameObject):
     def update_position(self, keys, dt):
         velocity = pygame.Vector2()
 
-        # プレイヤーが移動できる画面内の領域
-        boundary_max = self.screen_size + velocity
-        boundary_min = velocity
-
         if keys[pygame.K_w]:
-            velocity.y -= self.move_speed * dt
+            velocity.y -= self._move_speed * dt
         if keys[pygame.K_s]:
-            velocity.y += self.move_speed * dt
+            velocity.y += self._move_speed * dt
         if keys[pygame.K_a]:
-            velocity.x -= self.move_speed * dt
+            velocity.x -= self._move_speed * dt
         if keys[pygame.K_d]:
-            velocity.x += self.move_speed * dt
+            velocity.x += self._move_speed * dt
+
+        # プレイヤーが移動できる画面内の領域
+        boundary_max = self._move_boundary
+        boundary_min = pygame.Vector2(0, 0)
 
         moved_position = self.position + velocity
         if boundary_max.x < moved_position.x:
@@ -93,5 +85,4 @@ class Player(game_object.GameObject):
 
     def shoot(self, position):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(position), pygame.Vector2(640, 0), pygame.Vector2(6, 6), True,
-                       self._bullet_pool)
+        instance.setup(pygame.Vector2(position), self._bullet_velocity, self._bullet_size, True, self._bullet_pool)

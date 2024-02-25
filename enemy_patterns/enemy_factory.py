@@ -1,5 +1,5 @@
+import copy
 import pygame
-
 from enemy_patterns.enemy_type import EnemyType
 from enemy_patterns.interval_pattern import IntervalPattern
 from enemy_patterns.move_patterns import *
@@ -14,15 +14,55 @@ class EnemyFactory:
         self._player = player
         self._bullet_pool = ObjectPool(lambda: Bullet(), init_size=256)
         self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool))
+        self._move_patterns = {}
+
+    def build_blueprint(self):
+        def get_value(values, idx):
+            if len(values) <= idx:
+                return 0
+            else:
+                return float(values[idx])
+
+        with open("resource/enemy_move_pattern.csv") as f:
+            for enemy_type in EnemyType:
+                line = f.readline()
+                # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす
+                if enemy_type == EnemyType.Blank:
+                    continue
+
+                if len(line) == 0:
+                    break
+
+                parameter = line.rstrip().replace(' ', '').split(',')
+                move_type = parameter[1]
+                speed = get_value(parameter, 2)
+                wave_amp = get_value(parameter, 3)
+                wave_duration = get_value(parameter, 4)
+                stop_distance = get_value(parameter, 5)
+                vertical_speed = get_value(parameter, 6)
+
+                if move_type == "Horizontal":
+                    move_pattern = horizontal_move.HorizontalMove(speed)
+                elif move_type == "Wavy":
+                    move_pattern = wavy.Wavy(speed, wave_amp, wave_duration)
+                elif move_type == "Chase":
+                    move_pattern = chase.Chase(speed, stop_distance)
+                elif move_type == "VerticalChase":
+                    move_pattern = vertical_chase.VerticalChase(speed, vertical_speed)
+
+                self._move_patterns[enemy_type.value[0]] = move_pattern
 
     def create(self, position, enemy_type):
         instance = self._enemy_pool.rent()
         interval = self.get_interval(enemy_type)
         player_position = self._player.position
-        move_pattern = IntervalPattern(interval, self.create_move(position, enemy_type,
-                                                                  interval, player_position).move)
+
+        move = copy.deepcopy(self._move_patterns[enemy_type])
+        move_pattern = IntervalPattern(interval, move.move)
+
         shoot_pattern = IntervalPattern(interval, self.create_shoot(position, enemy_type,
                                                                     interval, player_position).shoot)
+        move.setup(owner_position=position, target_position=player_position)
         instance.setup(position, move_pattern, shoot_pattern)
 
     def get_interval(self, enemy_type):
@@ -45,28 +85,6 @@ class EnemyFactory:
 
         return 1
 
-    def create_move(self, enemy_position, enemy_type, interval, player_position):
-        if enemy_type is EnemyType.Horizontal.value[0]:
-            return horizontal_move.HorizontalMove(speed=96)
-        if enemy_type is EnemyType.Horizontal2.value[0]:
-            return horizontal_move.HorizontalMove(speed=128)
-        if enemy_type is EnemyType.Wavy.value[0]:
-            return wavy.Wavy(horizontal_speed=96, amp=32, duration=interval)
-        if enemy_type is EnemyType.Wavy2.value[0]:
-            return wavy.Wavy(horizontal_speed=128, amp=64, duration=interval)
-        if enemy_type is EnemyType.Chase.value[0]:
-            return chase.Chase(owner_position=enemy_position, target_position=player_position,
-                               speed=96, stop_distance=128)
-        if enemy_type is EnemyType.Chase2.value[0]:
-            return chase.Chase(owner_position=enemy_position, target_position=player_position,
-                               speed=128, stop_distance=128)
-        if enemy_type is EnemyType.VerticalChase.value[0]:
-            return vertical_chase.VerticalChase(owner_position=enemy_position, target_position=player_position,
-                                                velocity=pygame.Vector2(-192, 96))
-        if enemy_type is EnemyType.VerticalChase2.value[0]:
-            return vertical_chase.VerticalChase(owner_position=enemy_position, target_position=player_position,
-                                                velocity=pygame.Vector2(-256, 96))
-        return None
 
     def create_shoot(self, enemy_position, enemy_type, interval, player_position):
         if enemy_type is EnemyType.Horizontal.value[0]:

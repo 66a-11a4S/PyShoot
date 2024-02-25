@@ -11,3 +11,4 @@ class EnemyType(Enum):
     Chase2 = 6,  # 横一直線 + 自機狙い3way
     VerticalChase = 7,  # 縦軸合わせ + 自機狙い
     VerticalChase2 = 8,  # 縦軸合わせ + 自機外し2way
+    Count = 9,

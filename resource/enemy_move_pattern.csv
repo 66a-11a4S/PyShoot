@@ -1,0 +1,9 @@
+enemy, type, speed, wave_amp, wave_duration, stop_distance, vertical_speed
+Horizontal, Horizontal, 96
+Horizontal2, Horizontal, 128
+Wavy, Wavy, 96, 32, 0.5
+Wavy2, Wavy, 128, 32, 1
+Chase, Chase, 96, 0, 0, 128 
+Chase2, Chase, 128, 0, 0, 128 
+VerticalChase, VerticalChase, 192, 0, 0, 0, 96
+VerticalChase2, VerticalChase, 256, 0, 0, 0, 96

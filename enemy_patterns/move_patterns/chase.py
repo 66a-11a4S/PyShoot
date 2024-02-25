@@ -1,11 +1,11 @@
-# 自機を追いかける
 import pygame
+from enemy_patterns.move_patterns.move_pattern import MovePattern
 
 
-class Chase:
-    def __init__(self, owner_position, target_position, speed, stop_distance):
-        self._owner_position = owner_position
-        self._target_position = target_position
+# 自機を追いかける
+class Chase(MovePattern):
+    def __init__(self, speed, stop_distance):
+        super().__init__()
         self._speed = speed
         self.stop_distance = stop_distance
 

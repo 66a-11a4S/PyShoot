@@ -5,7 +5,7 @@ from collision.collision_manager import CollisionManager
 from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
 from game_objects.player import Player
-from scene.Scene import Scene
+from scene.scene import Scene
 from stage.stage_coordinator import StageCoordinator
 
 

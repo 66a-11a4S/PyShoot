@@ -1,6 +1,6 @@
 import pygame
 from enum import Enum
-from scene.Scene import Scene
+from scene.scene import Scene
 
 
 class Title(Scene):

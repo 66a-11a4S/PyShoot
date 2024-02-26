@@ -1,6 +1,6 @@
 import pygame
 import app_setting
-from main_game import MainGame
+from scene.main_game import MainGame
 
 # pygame のセットアップ
 pygame.init()
@@ -13,6 +13,9 @@ main_game = MainGame()
 dt = 0
 
 running = True
+
+main_game.setup()
+
 while running:
     # event のポーリング
     for event in pygame.event.get():
@@ -24,7 +27,8 @@ while running:
     screen.fill(app_setting.bg_fill_color)
 
     # ゲーム更新処理
-    main_game.update(screen, dt)
+    main_game.update(dt)
+    main_game.draw(screen, dt)
 
     # 描画内容を画面に反映する
     pygame.display.flip()
@@ -32,5 +36,7 @@ while running:
     # このメソッドを毎フレーム呼び出す. 引数を指定するとフレームレートの上限を設定できる.
     # 戻り値: 前回の呼び出しから何秒が経過したか
     dt = clock.tick(app_setting.frame_rate) / 1000
+
+main_game.dispose()
 
 pygame.quit()

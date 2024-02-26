@@ -5,10 +5,11 @@ from collision.collision_manager import CollisionManager
 from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
 from game_objects.player import Player
+from scene.Scene import Scene
 from stage.stage_coordinator import StageCoordinator
 
 
-class MainGame:
+class MainGame(Scene):
     class GameState(Enum):
         Prepare = 0,
         Running = 1,
@@ -34,14 +35,27 @@ class MainGame:
         self._prepare_timer = 0.0
         self._game_state = MainGame.GameState.Prepare
 
-    def update(self, screen, dt):
+    def update(self, dt):
         if self._game_state is MainGame.GameState.Prepare:
             self.update_prepare(dt)
-            self.draw_prepare(screen)
             return
 
         if self._game_state is MainGame.GameState.Running:
             self.update_running(dt)
+            return
+
+        if self._game_state is MainGame.GameState.GameOver:
+            return
+
+        if self._game_state is MainGame.GameState.GameClear:
+            return
+
+    def draw(self, screen, dt):
+        if self._game_state is MainGame.GameState.Prepare:
+            self.draw_prepare(screen)
+            return
+
+        if self._game_state is MainGame.GameState.Running:
             self.draw_running(screen, dt)
             return
 

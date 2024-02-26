@@ -1,5 +1,6 @@
 import pygame
 import app_setting
+from scene.Title import Title
 from scene.main_game import MainGame
 
 # pygame のセットアップ
@@ -7,7 +8,8 @@ pygame.init()
 screen = pygame.display.set_mode(app_setting.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
-main_game = MainGame()
+#main_game = MainGame()
+main_game = Title()
 
 # 前フレームから何ミリ秒経過したか
 dt = 0

@@ -1,6 +1,5 @@
 import pygame
 import app_setting
-from game_objects import camera, player
 from main_game import MainGame
 
 # pygame のセットアップ
@@ -8,14 +7,10 @@ pygame.init()
 screen = pygame.display.set_mode(app_setting.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
-# ゲーム内で動くオブジェクトを用意
-camera = camera.Camera(pygame.Vector2(0, 0), app_setting.screen_size)
-player = player.Player(pygame.Vector2(app_setting.screen_size / 2), camera.scroll_velocity, app_setting.screen_size)
+main_game = MainGame()
 
 # 前フレームから何ミリ秒経過したか
 dt = 0
-
-main_game = MainGame(player, camera)
 
 running = True
 while running:

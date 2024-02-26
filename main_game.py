@@ -1,7 +1,10 @@
 import pygame
+import app_setting
 from enum import Enum
 from collision.collision_manager import CollisionManager
+from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
+from game_objects.player import Player
 from stage.stage_coordinator import StageCoordinator
 
 
@@ -12,15 +15,16 @@ class MainGame:
         GameOver = 2,
         GameClear = 3,
 
-    def __init__(self, player, camera):
+    def __init__(self):
         # game sequence settings
         self._prepare_duration = 3
 
         # instance settings
         self._manager = GameObjectManager()
         self._collision_manager = CollisionManager()
-        self._player = player
-        self._camera = camera
+        self._camera = Camera(pygame.Vector2(0, 0), app_setting.screen_size)
+        self._player = Player(pygame.Vector2(app_setting.screen_size / 2), self._camera.scroll_velocity,
+                              app_setting.screen_size)
         self._stage_coordinator = StageCoordinator(self._player)
 
         # player settings

@@ -88,3 +88,4 @@ class EnemyFactory:
         shoot.setup(owner_position=position, target_position=player_position)
         instance = self._enemy_pool.rent()
         instance.setup(position, move_pattern, shoot_pattern)
+        return instance

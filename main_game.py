@@ -9,7 +9,8 @@ class MainGame:
     class GameState(Enum):
         Prepare = 0,
         Running = 1,
-        GameOver = 2
+        GameOver = 2,
+        GameClear = 3,
 
     def __init__(self, player, camera):
         # game sequence settings
@@ -44,6 +45,10 @@ class MainGame:
             self.draw_game_over(screen)
             return
 
+        if self._game_state is MainGame.GameState.GameClear:
+            self.draw_game_clear(screen)
+            return
+
     def update_prepare(self, dt):
         self._prepare_timer += dt
         self.update_game_objects(dt)
@@ -61,6 +66,8 @@ class MainGame:
         # ゲームを進行させる
         self._stage_coordinator.progress_stage()
         self.update_game_objects(dt)
+        if self._stage_coordinator.has_end():
+            self._game_state = MainGame.GameState.GameClear
 
     def draw_running(self, screen, dt):
         self.draw_game_objects(screen)
@@ -71,7 +78,14 @@ class MainGame:
     def draw_game_over(self, screen):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
-        text = font.render('GameOver', True, (255, 255, 255))
+        text = font.render('GameOver', True, (255, 0, 0))
+        screen.blit(text, pygame.Vector2(0, 0))
+        pass
+
+    def draw_game_clear(self, screen):
+        self.draw_game_objects(screen)
+        font = pygame.font.Font(None, 30)
+        text = font.render('GameClear', True, (0, 0, 255))
         screen.blit(text, pygame.Vector2(0, 0))
         pass
 

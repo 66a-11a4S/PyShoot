@@ -12,6 +12,7 @@ class StageCoordinator:
         self._before_spawn_column = 0
         self._field = None
         self._enemy_factory.build_blueprint()
+        self._spawned_enemies = []
 
     # 最初に画面内の敵を生成する
     def setup(self):
@@ -35,7 +36,8 @@ class StageCoordinator:
                     continue
 
                 position = pygame.Vector2(x * tile_size, y * tile_size)
-                self._enemy_factory.create(position, enemy_type)
+                instance = self._enemy_factory.create(position, enemy_type)
+                self._spawned_enemies.append(instance)
 
     # stage を進行させ画面内部に入った敵を生成する
     def progress_stage(self):
@@ -54,6 +56,15 @@ class StageCoordinator:
                     continue
 
                 position = pygame.Vector2(app_setting.screen_size.x, y * tile_size)
-                self._enemy_factory.create(position, enemy_type)
+                instance = self._enemy_factory.create(position, enemy_type)
+                self._spawned_enemies.append(instance)
 
         self._before_spawn_column = current_spawn_column
+
+    # 敵が全滅 & ステージの端まで到達したら終了
+    def has_end(self):
+        for enemy in self._spawned_enemies:
+            if enemy.enabled:
+                return False
+
+        return self._field.progress_is_max()

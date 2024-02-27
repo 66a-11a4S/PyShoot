@@ -1,6 +1,7 @@
 import pygame
 from enum import Enum
 from scene.scene import Scene
+from scene.scene_type import SceneType
 
 
 class Title(Scene):
@@ -9,7 +10,8 @@ class Title(Scene):
         Exit = 1,
         Count = 2,
 
-    def __init__(self):
+    def __init__(self, change_scene_impl):
+        super().__init__(change_scene_impl)
         self._current_cursor = 0
         self._title_font = pygame.font.Font(None, 64)
         self._content_font = pygame.font.Font(None, 30)
@@ -44,12 +46,7 @@ class Title(Scene):
 
     def execute_command(self, cursor_pos):
         if cursor_pos == Title.Menu.Start.value[0]:
-            self.start_game()
+            self.change_scene(SceneType.Main)
         if cursor_pos == Title.Menu.Exit.value[0]:
-            self.quit_game()
+            self.change_scene(SceneType.Quit)
 
-    def start_game(self):
-        pass
-
-    def quit_game(self):
-        pass

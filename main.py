@@ -9,14 +9,13 @@ screen = pygame.display.set_mode(app_setting.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
 scene_runner = SceneRunner()
-scene_runner.change_scene(SceneType.Title)
+scene_runner.request_change_scene(SceneType.Title)
+scene_runner.start()
 
 # 前フレームから何ミリ秒経過したか
 dt = 0
 
-running = True
-
-while running:
+while scene_runner.is_running:
     # event のポーリング
     for event in pygame.event.get():
         # X を押してウィンドウを閉じられた

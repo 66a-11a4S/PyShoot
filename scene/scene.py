@@ -1,4 +1,10 @@
 class Scene:
+    def __init__(self, change_scene_impl):
+        self._change_scene_impl = change_scene_impl
+
+    def change_scene(self, scene_type):
+        self._change_scene_impl(scene_type)
+
     def setup(self):
         pass
 

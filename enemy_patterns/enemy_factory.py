@@ -13,6 +13,7 @@ class EnemyFactory:
         self._player = player
         self._bullet_pool = ObjectPool(lambda: Bullet(), init_size=256)
         self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool))
+        self._status_table = {}
         self._move_patterns = {}
         self._shoot_patterns = {}
 
@@ -22,6 +23,20 @@ class EnemyFactory:
                 return 0
             else:
                 return float(values[idx])
+
+        with open("resource/enemy_status.csv") as f:
+            for enemy_type in EnemyType:
+                line = f.readline()
+                # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす
+                if enemy_type == EnemyType.Blank:
+                    continue
+
+                if len(line) == 0:
+                    break
+
+                parameter = line.rstrip().replace(' ', '').split(',')
+                score = get_value(parameter, 1)
+                self._status_table[enemy_type.value[0]] = score
 
         with open("resource/enemy_move_pattern.csv") as f:
             for enemy_type in EnemyType:
@@ -77,6 +92,8 @@ class EnemyFactory:
                 self._shoot_patterns[enemy_type.value[0]] = shoot_pattern
 
     def create(self, position, enemy_type):
+        score = self._status_table[enemy_type]
+
         move = copy.deepcopy(self._move_patterns[enemy_type])
         move_pattern = IntervalPattern(move.interval, move.move)
 
@@ -87,5 +104,5 @@ class EnemyFactory:
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
         instance = self._enemy_pool.rent()
-        instance.setup(position, move_pattern, shoot_pattern)
+        instance.setup(position, score, move_pattern, shoot_pattern)
         return instance

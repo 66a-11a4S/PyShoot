@@ -1,0 +1,9 @@
+enemy, score
+Horizontal, 10
+Horizontal2, 30
+Wavy, 20
+Wavy2, 30
+Chase, 40
+Chase2, 60
+VerticalChase, 20
+VerticalChase2, 40

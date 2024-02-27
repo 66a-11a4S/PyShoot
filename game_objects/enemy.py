@@ -17,6 +17,7 @@ class Enemy(game_object.GameObject):
 
         self.position = pygame.Vector2()
         self._score = 0
+        self._hp = 0
         self._on_gained_score = None
         self._move_pattern = None
         self._shoot_pattern = None
@@ -24,8 +25,9 @@ class Enemy(game_object.GameObject):
 
         self.disable()
 
-    def setup(self, position, score, move_pattern, shoot_pattern, on_gained_score):
+    def setup(self, position, hp, score, move_pattern, shoot_pattern, on_gained_score):
         self.position = position
+        self._hp = hp
         self._score = score
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern
@@ -55,8 +57,10 @@ class Enemy(game_object.GameObject):
 
     def on_intersected(self, collider):
         if collider.layer == CollisionLayer.PlayerShot:
-            self._on_gained_score(self._score)
-            self.disable()
+            self._hp -= 1
+            if self._hp <= 0:
+                self._on_gained_score(self._score)
+                self.disable()
 
     def shoot(self, vec):
         instance = self._bullet_pool.rent()

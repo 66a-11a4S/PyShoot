@@ -1,9 +1,9 @@
-enemy, score
-Horizontal, 10
-Horizontal2, 30
-Wavy, 20
-Wavy2, 30
-Chase, 40
-Chase2, 60
-VerticalChase, 20
-VerticalChase2, 40
+enemy, hp, score
+Horizontal, 3, 10
+Horizontal2, 5, 30
+Wavy, 3, 20
+Wavy2, 5, 30
+Chase, 5, 40
+Chase2, 8, 60
+VerticalChase, 5, 20
+VerticalChase2, 8, 40

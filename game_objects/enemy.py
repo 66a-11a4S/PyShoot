@@ -6,7 +6,6 @@ from collision.collision_layer import CollisionLayer
 
 
 class Enemy(game_object.GameObject):
-    _size = pygame.Vector2(24, 24)
     _bullet_size = pygame.Vector2(4, 4)
 
     def __init__(self, bullet_pool):
@@ -14,6 +13,7 @@ class Enemy(game_object.GameObject):
         self._bullet_pool = bullet_pool
         self.material = pygame.Color(255, 128, 128)
         self._image = None
+        self._size = pygame.Vector2(0, 0)
         self._disappear_range_margin = self._size
 
         self.position = pygame.Vector2()
@@ -26,9 +26,11 @@ class Enemy(game_object.GameObject):
 
         self.disable()
 
-    def setup(self, position, hp, score, move_pattern, shoot_pattern, on_gained_score, image_path):
+    def setup(self, position, hp, size, score, move_pattern, shoot_pattern, on_gained_score, image_path):
         self.position = position
         self._hp = hp
+        self._size.x = size
+        self._size.y = size
         self._score = score
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern

@@ -1,9 +1,9 @@
-enemy, hp, score, image
-Horizontal, 3, 10, resource/image/enemy_light.png
-Horizontal2, 5, 30, resource/image/enemy_light.png
-Wavy, 3, 20, resource/image/enemy_bold.png
-Wavy2, 5, 30, resource/image/enemy_bold.png
-Chase, 5, 40, resource/image/enemy_chase.png
-Chase2, 8, 60, resource/image/enemy_chase.png
-VerticalChase, 5, 20, resource/image/enemy_light.png
-VerticalChase2, 8, 40, resource/image/enemy_light.png
+enemy, hp, size, score, image
+Horizontal, 3, 24, 10, resource/image/enemy_light.png
+Horizontal2, 5, 24, 30, resource/image/enemy_light.png
+Wavy, 3,64, 20, resource/image/enemy_bold.png
+Wavy2, 5,64, 30, resource/image/enemy_bold.png
+Chase, 5,48, 40, resource/image/enemy_chase.png
+Chase2, 8,48, 60, resource/image/enemy_chase.png
+VerticalChase, 5, 24, 20, resource/image/enemy_light.png
+VerticalChase2, 8, 24, 40, resource/image/enemy_light.png

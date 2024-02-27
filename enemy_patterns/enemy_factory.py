@@ -38,9 +38,10 @@ class EnemyFactory:
 
                 parameter = line.rstrip().replace(' ', '').split(',')
                 hp = get_value(parameter, 1)
-                score = get_value(parameter, 2)
-                image_path = parameter[3]
-                self._status_table[enemy_type.value[0]] = (hp, score, image_path)
+                size = get_value(parameter, 2)
+                score = get_value(parameter, 3)
+                image_path = parameter[4]
+                self._status_table[enemy_type.value[0]] = (hp, size, score, image_path)
 
         with open("resource/master_data/enemy_move_pattern.csv") as f:
             for enemy_type in EnemyType:
@@ -97,8 +98,9 @@ class EnemyFactory:
 
     def create(self, position, enemy_type):
         hp = self._status_table[enemy_type][0]
-        score = self._status_table[enemy_type][1]
-        image_path = self._status_table[enemy_type][2]
+        size = self._status_table[enemy_type][1]
+        score = self._status_table[enemy_type][2]
+        image_path = self._status_table[enemy_type][3]
 
         move = copy.deepcopy(self._move_patterns[enemy_type])
         move_pattern = IntervalPattern(move.interval, move.move)
@@ -110,5 +112,5 @@ class EnemyFactory:
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
         instance = self._enemy_pool.rent()
-        instance.setup(position, hp, score, move_pattern, shoot_pattern, self._on_gained_score, image_path)
+        instance.setup(position, hp, size, score, move_pattern, shoot_pattern, self._on_gained_score, image_path)
         return instance

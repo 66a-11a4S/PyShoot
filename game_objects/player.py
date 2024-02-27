@@ -29,6 +29,7 @@ class Player(game_object.GameObject):
 
         self._recovering = False
         self._recover_timer = 0.0
+        self._image = pygame.image.load("resource/image/player.png")
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
@@ -36,9 +37,10 @@ class Player(game_object.GameObject):
         self.update_shoot(keys, dt)
 
     def draw(self, screen, camera_position):
-        player_view_position = self.position
-        mat = pygame.Color(0, 0, 0) if self._recovering else self._material
-        pygame.draw.circle(screen, mat, player_view_position, self._shape)
+        # mat = pygame.Color(0, 0, 0) if self._recovering else self._material
+        # pygame.draw.circle(screen, mat, self.position, self._shape)
+        player_view_position = self.position - pygame.Vector2(self._shape, self._shape)
+        screen.blit(self._image, player_view_position)
 
     def on_intersected(self, _):
         for func in self._intersected_events:

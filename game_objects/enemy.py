@@ -13,6 +13,7 @@ class Enemy(game_object.GameObject):
         super().__init__()
         self._bullet_pool = bullet_pool
         self.material = pygame.Color(255, 128, 128)
+        self._image = None
         self._disappear_range_margin = self._size
 
         self.position = pygame.Vector2()
@@ -25,13 +26,14 @@ class Enemy(game_object.GameObject):
 
         self.disable()
 
-    def setup(self, position, hp, score, move_pattern, shoot_pattern, on_gained_score):
+    def setup(self, position, hp, score, move_pattern, shoot_pattern, on_gained_score, image_path):
         self.position = position
         self._hp = hp
         self._score = score
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern
         self._on_gained_score = on_gained_score
+        self._image = pygame.image.load(image_path)
 
         self.collider.center = position
         self.collider.enabled = True
@@ -54,6 +56,7 @@ class Enemy(game_object.GameObject):
         enemy_view_pos = min_pos
         rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
         pygame.draw.rect(screen, self.material, rect)
+        screen.blit(self._image, enemy_view_pos)
 
     def on_intersected(self, collider):
         if collider.layer == CollisionLayer.PlayerShot:

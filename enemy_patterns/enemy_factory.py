@@ -26,7 +26,7 @@ class EnemyFactory:
             else:
                 return float(values[idx])
 
-        with open("resource/enemy_status.csv") as f:
+        with open("resource/master_data/enemy_status.csv") as f:
             for enemy_type in EnemyType:
                 line = f.readline()
                 # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす
@@ -41,7 +41,7 @@ class EnemyFactory:
                 score = get_value(parameter, 2)
                 self._status_table[enemy_type.value[0]] = (hp, score)
 
-        with open("resource/enemy_move_pattern.csv") as f:
+        with open("resource/master_data/enemy_move_pattern.csv") as f:
             for enemy_type in EnemyType:
                 line = f.readline()
                 # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす
@@ -70,7 +70,7 @@ class EnemyFactory:
 
                 self._move_patterns[enemy_type.value[0]] = move_pattern
 
-        with open("resource/enemy_shoot_pattern.csv") as f:
+        with open("resource/master_data/enemy_shoot_pattern.csv") as f:
             for enemy_type in EnemyType:
                 line = f.readline()
                 # 1つ目の Type はスキップ. csv も1行目はパラメータの説明なので読み飛ばす

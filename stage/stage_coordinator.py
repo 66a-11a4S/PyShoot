@@ -22,7 +22,7 @@ class StageCoordinator:
         # with でスコープを抜けるとき自動で dispose 処理が走る
         # パスの位置は os.getcwd で確認できる
         tiles = []
-        with open("resource/stage.csv") as f:
+        with open("resource/master_data/stage.csv") as f:
             for s in f.readlines():
                 char_row = s.rstrip().replace(' ', '').split(',')
                 # いわゆる collection 式. [ ] の中に collection を形成できる式を記述する

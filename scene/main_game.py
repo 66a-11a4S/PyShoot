@@ -6,6 +6,7 @@ from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
 from game_objects.player import Player
 from scene.scene import Scene
+from scene.scene_type import SceneType
 from stage.stage_coordinator import StageCoordinator
 
 
@@ -16,7 +17,9 @@ class MainGame(Scene):
         GameOver = 2,
         GameClear = 3,
 
-    def __init__(self):
+    def __init__(self, change_scene_impl):
+        super().__init__(change_scene_impl)
+
         # game sequence settings
         self._prepare_duration = 3
 
@@ -45,9 +48,11 @@ class MainGame(Scene):
             return
 
         if self._game_state is MainGame.GameState.GameOver:
+            self.update_finished(dt)
             return
 
         if self._game_state is MainGame.GameState.GameClear:
+            self.update_finished(dt)
             return
 
     def draw(self, screen, dt):
@@ -127,3 +132,8 @@ class MainGame(Scene):
             self._game_state = MainGame.GameState.GameOver
         else:
             self._player.start_recover()
+
+    def update_finished(self, _):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            self.change_scene(SceneType.Title)

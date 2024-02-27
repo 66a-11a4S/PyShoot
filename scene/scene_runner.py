@@ -47,6 +47,6 @@ class SceneRunner:
         if scene_type == SceneType.Title:
             return Title(self.request_change_scene)
         if scene_type == SceneType.Main:
-            return MainGame()
+            return MainGame(self.request_change_scene)
 
         return None

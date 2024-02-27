@@ -9,8 +9,10 @@ from object_pool import ObjectPool
 
 
 class EnemyFactory:
-    def __init__(self, player):
+    def __init__(self, player, on_gained_score):
         self._player = player
+        self._on_gained_score = on_gained_score
+
         self._bullet_pool = ObjectPool(lambda: Bullet(), init_size=256)
         self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool))
         self._status_table = {}
@@ -104,5 +106,5 @@ class EnemyFactory:
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
         instance = self._enemy_pool.rent()
-        instance.setup(position, score, move_pattern, shoot_pattern)
+        instance.setup(position, score, move_pattern, shoot_pattern, self._on_gained_score)
         return instance

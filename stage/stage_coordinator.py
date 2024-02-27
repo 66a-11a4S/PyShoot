@@ -6,9 +6,9 @@ from stage.Field import Field
 
 
 class StageCoordinator:
-    def __init__(self, player):
+    def __init__(self, enemy_factory):
         self._row_count = int(app_setting.screen_size.y // app_setting.tile_size)
-        self._enemy_factory = EnemyFactory(player)
+        self._enemy_factory = enemy_factory
         self._before_spawn_column = 0
         self._field = None
         self._enemy_factory.build_blueprint()

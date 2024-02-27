@@ -17,17 +17,19 @@ class Enemy(game_object.GameObject):
 
         self.position = pygame.Vector2()
         self._score = 0
+        self._on_gained_score = None
         self._move_pattern = None
         self._shoot_pattern = None
         self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
 
         self.disable()
 
-    def setup(self, position, score, move_pattern, shoot_pattern):
+    def setup(self, position, score, move_pattern, shoot_pattern, on_gained_score):
         self.position = position
         self._score = score
         self._move_pattern = move_pattern
         self._shoot_pattern = shoot_pattern
+        self._on_gained_score = on_gained_score
 
         self.collider.center = position
         self.collider.enabled = True
@@ -53,6 +55,7 @@ class Enemy(game_object.GameObject):
 
     def on_intersected(self, collider):
         if collider.layer == CollisionLayer.PlayerShot:
+            self._on_gained_score(self._score)
             self.disable()
 
     def shoot(self, vec):
@@ -62,7 +65,3 @@ class Enemy(game_object.GameObject):
     def disable(self):
         self.collider.enabled = False
         self.enabled = False
-
-    @property
-    def score(self):
-        return self._score

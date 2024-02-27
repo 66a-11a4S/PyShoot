@@ -2,6 +2,7 @@ import pygame
 import app_setting
 from enum import Enum
 from collision.collision_manager import CollisionManager
+from enemy_patterns.enemy_factory import EnemyFactory
 from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
 from game_objects.player import Player
@@ -29,13 +30,15 @@ class MainGame(Scene):
         self._camera = Camera(pygame.Vector2(0, 0), app_setting.screen_size)
         self._player = Player(pygame.Vector2(app_setting.screen_size / 2), self._camera.scroll_velocity,
                               app_setting.screen_size)
-        self._stage_coordinator = StageCoordinator(self._player)
+        enemy_factory = EnemyFactory(self._player, self.on_gained_score)
+        self._stage_coordinator = StageCoordinator(enemy_factory)
 
         # player settings
         self._player_rest = 3
         self._player.register_intersected(self.on_damaged)
 
         self._prepare_timer = 0.0
+        self._total_score = 0
         self._game_state = MainGame.GameState.Prepare
 
     def update(self, dt):
@@ -95,22 +98,26 @@ class MainGame(Scene):
     def draw_running(self, screen, dt):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
-        text = font.render(f'Score: {dt}', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(0, 0))
+        fps_text = font.render(f'tick: {dt}', True, (255, 255, 255))
+        screen.blit(fps_text, pygame.Vector2(0, 0))
+        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(128, 0))
 
     def draw_game_over(self, screen):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
         text = font.render('GameOver', True, (255, 0, 0))
         screen.blit(text, pygame.Vector2(0, 0))
-        pass
+        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(128, 0))
 
     def draw_game_clear(self, screen):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
         text = font.render('GameClear', True, (0, 0, 255))
         screen.blit(text, pygame.Vector2(0, 0))
-        pass
+        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(128, 0))
 
     def update_game_objects(self, dt):
         self._manager.update()
@@ -132,6 +139,9 @@ class MainGame(Scene):
             self._game_state = MainGame.GameState.GameOver
         else:
             self._player.start_recover()
+
+    def on_gained_score(self, score):
+        self._total_score += score
 
     def update_finished(self, _):
         keys = pygame.key.get_pressed()

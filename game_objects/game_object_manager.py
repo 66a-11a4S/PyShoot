@@ -22,6 +22,9 @@ class GameObjectManager:
     def remove(self, instance):
         self.remove_requested.append(instance)
 
+    def remove_all(self):
+        self.actual_instance.clear()
+
     def update(self):
         # TODO: Remove が O(n) なので呼び出し頻度次第で代替案を検討
         for instance in self.remove_requested:

@@ -75,6 +75,9 @@ class MainGame(Scene):
             self.draw_game_clear(screen)
             return
 
+    def dispose(self):
+        GameObjectManager().remove_all()
+
     def update_prepare(self, dt):
         self._prepare_timer += dt
         self.update_game_objects(dt)

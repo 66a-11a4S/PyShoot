@@ -1,3 +1,6 @@
+from instance_manager import InstanceManager
+
+
 class GameObjectManager:
     # singleton instance
     _instance = None
@@ -6,33 +9,22 @@ class GameObjectManager:
         # __new__  や __init__ はクラスを生成しようとするたびに毎回呼ばれる
         if cls._instance is None:
             cls._instance = super(GameObjectManager, cls).__new__(cls)
-            cls.actual_instance = []
-            cls.add_requested = []
-            cls.remove_requested = []
+            cls._instance_manager = InstanceManager()
         return cls._instance
 
     # @property 属性をつけると getter としてみなされ、関数呼び出しの () をつけずに値を参照できる
     @property
     def instances(self):
-        return self.actual_instance + self.add_requested
+        return self._instance_manager.instances
 
     def add(self, instance):
-        self.add_requested.append(instance)
+        self._instance_manager.add(instance)
 
     def remove(self, instance):
-        self.remove_requested.append(instance)
+        self._instance_manager.remove(instance)
 
     def remove_all(self):
-        self.actual_instance.clear()
+        self._instance_manager.remove_all()
 
     def update(self):
-        # TODO: Remove が O(n) なので呼び出し頻度次第で代替案を検討
-        for instance in self.remove_requested:
-            self.actual_instance.remove(instance)
-
-        self.remove_requested.clear()
-
-        for instance in self.add_requested:
-            self.actual_instance.append(instance)
-
-        self.add_requested.clear()
+        self._instance_manager.update()

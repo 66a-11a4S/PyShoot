@@ -76,7 +76,7 @@ class MainGame(Scene):
             return
 
     def dispose(self):
-        GameObjectManager().remove_all()
+        self._manager.remove_all()
 
     def update_prepare(self, dt):
         self._prepare_timer += dt

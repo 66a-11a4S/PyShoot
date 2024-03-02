@@ -1,3 +1,6 @@
+from instance_manager import InstanceManager
+
+
 class ColliderPool:
     # singleton instance
     _instance = None
@@ -5,29 +8,22 @@ class ColliderPool:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(ColliderPool, cls).__new__(cls)
-            cls.actual_instance = []
-            cls.add_requested = []
-            cls.remove_requested = []
+            cls._instance_manager = InstanceManager()
         return cls._instance
 
     @property
     def instances(self):
-        return self.actual_instance + self.add_requested
+        return self._instance_manager.instances
 
     def add(self, instance):
-        self.add_requested.append(instance)
+        self._instance_manager.add(instance)
 
     def remove(self, instance):
-        self.remove_requested.append(instance)
+        self._instance_manager.remove(instance)
+
+    def remove_all(self):
+        self._instance_manager.remove_all()
 
     def update(self):
-        # TODO: Remove が O(n) なので呼び出し頻度次第で代替案を検討
-        for instance in self.remove_requested:
-            self.actual_instance.remove(instance)
+        self._instance_manager.update()
 
-        self.remove_requested.clear()
-
-        for instance in self.add_requested:
-            self.actual_instance.append(instance)
-
-        self.add_requested.clear()

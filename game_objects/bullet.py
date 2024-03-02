@@ -1,5 +1,4 @@
 import pygame
-
 import app_setting
 from collision.collision_layer import CollisionLayer
 from collision.sphere_collider import SphereCollider
@@ -13,7 +12,7 @@ class Bullet(game_object.GameObject):
         self.velocity = pygame.Vector2()
         self.position = pygame.Vector2()
         self._radius = 0
-        self.collider = None
+        self.collider = SphereCollider(pygame.Vector2(), 1, self.on_intersected, CollisionLayer.PlayerShot)
         self.is_player_bullet = False
         self.enabled = False
         self._pool = None
@@ -24,8 +23,12 @@ class Bullet(game_object.GameObject):
         self.velocity = velocity
         self._radius = size.x
         layer = CollisionLayer.PlayerShot if is_player_bullet else CollisionLayer.EnemyShot
-        self.collider = SphereCollider(self.position, self._radius, self.on_intersected, layer)
-        self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
+        self.collider.center = self.position
+        self.collider.size.x = self._radius
+        self.collider.size.y = self._radius
+        self.collider.layer = layer
+
+#        self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
         image_path = "resource/image/player_bullet.png" if is_player_bullet else "resource/image/enemy_bullet.png"
         self._image = pygame.image.load(image_path)
         self._pool = pool

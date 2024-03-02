@@ -33,7 +33,9 @@ class CollisionManager:
         if not col_a.enabled or not col_b.enabled:
             return False
 
-        if not self._collision_matrix[col_a.layer.value[0]][col_b.layer.value[0]]:
+        # col_a.layer.value[0] にアクセスする部分で bottle-neck になっていたのでキャッシュされた value を参照する.
+        # python の Enum はクラスだからか?
+        if not self._collision_matrix[col_a.layer_value][col_b.layer_value]:
             return False
 
         return True

@@ -5,11 +5,20 @@ class Collider:
     def __init__(self, position, size, on_intersected, layer):
         self.center = position
         self.size = size
-        self.layer = layer
         self._on_intersected = on_intersected
         self.enabled = True
         self._manager = ColliderPool()
         self._manager.add(self)
+        self._layer = layer
+        self._layer_value = layer.value[0]
+
+    @property
+    def layer_value(self):
+        return self._layer_value
+
+    def set_layer(self, layer):
+        self._layer = layer
+        self._layer_value = layer.value[0]
 
     def sync_position(self, position):
         self.center = position

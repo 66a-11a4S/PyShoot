@@ -26,7 +26,7 @@ class Bullet(game_object.GameObject):
         self.collider.center = self.position
         self.collider.size.x = self._radius
         self.collider.size.y = self._radius
-        self.collider.layer = layer
+        self.collider.set_layer(layer)
 
 #        self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
         image_path = "resource/image/player_bullet.png" if is_player_bullet else "resource/image/enemy_bullet.png"

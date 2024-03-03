@@ -1,4 +1,6 @@
 import pygame
+
+from auido.channel_id import ChannelType
 from game_objects import game_object, bullet
 from collision import sphere_collider
 from collision.collision_layer import CollisionLayer
@@ -31,7 +33,10 @@ class Player(game_object.GameObject):
         self._recovering = False
         self._recover_timer = 0.0
         self._image = pygame.image.load("resource/image/player.png")
-        self._sound_shot = pygame.mixer.Sound("resource/audio/se_main_player_shot.ogg")
+
+        # 自弾の連射音で他のチャンネルを埋めないようにする
+        self._sound_shot_channel = pygame.mixer.Channel(ChannelType.PlayerShot.value[0])
+        self._sound_shot = pygame.mixer.Sound("resource/audio/se_main_player_shot.wav")
         self._sound_damage = pygame.mixer.Sound("resource/audio/se_main_player_damage.ogg")
 
     def update(self, dt):
@@ -92,7 +97,7 @@ class Player(game_object.GameObject):
                 self.shoot(self.position + pygame.Vector2(16, 8))
                 self.shoot(self.position + pygame.Vector2(16, -16))
                 self.shoot(self.position + pygame.Vector2(16, 16))
-                self._sound_shot.play()
+                self._sound_shot_channel.play(self._sound_shot)
 
             self._shoot_timer += dt
 

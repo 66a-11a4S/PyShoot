@@ -1,5 +1,6 @@
 import pygame
 import app_setting
+from auido.channel_id import ChannelType
 from scene.main_game_state.main_game_state import MainGameState
 from scene.main_game_state.state_type import StateType
 
@@ -10,10 +11,11 @@ class GameEndState(MainGameState):
         self._message = "Game Clear" if has_cleared else "Game Over"
         self._hud_font = pygame.font.Font(None, 30)
         self._hud_color = pygame.Color(0, 0, 255) if has_cleared else pygame.Color(255, 0, 0)
+        self._jingle_channel = pygame.mixer.Channel(ChannelType.System.value[0])
         self._sound_jingle = pygame.mixer.Sound("resource/audio/me_main_end.ogg")
 
     def setup(self):
-        self._sound_jingle.play()
+        self._jingle_channel.play(self._sound_jingle)
 
     def update(self, dt):
         keys = pygame.key.get_pressed()

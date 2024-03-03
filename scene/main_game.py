@@ -65,12 +65,14 @@ class MainGame(Scene):
             return
 
     def draw(self, screen, dt):
+        self.draw_common_hud(screen, dt)
+
         if self._game_state is MainGame.GameState.Prepare:
             self.draw_prepare(screen)
             return
 
         if self._game_state is MainGame.GameState.Running:
-            self.draw_running(screen, dt)
+            self.draw_running(screen)
             return
 
         if self._game_state is MainGame.GameState.GameOver:
@@ -96,7 +98,9 @@ class MainGame(Scene):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
         text = font.render('Are You Ready?', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(0, 0))
+        screen_center = app_setting.screen_size * 0.5
+        offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
+        screen.blit(text, screen_center - offset)
 
     def update_running(self, dt):
         # ゲームを進行させる
@@ -105,33 +109,24 @@ class MainGame(Scene):
         if self._stage_coordinator.has_end():
             self._game_state = MainGame.GameState.GameClear
 
-    def draw_running(self, screen, dt):
+    def draw_running(self, screen):
         self.draw_game_objects(screen)
-        font = pygame.font.Font(None, 30)
-        fps_text = font.render(f'tick: {dt}', True, (255, 255, 255))
-        screen.blit(fps_text, pygame.Vector2(app_setting.screen_size.x - 128, 0))
-        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(192, 0))
-        text = font.render(f'Player: ', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(0, 0))
-        for x in range(self._player_rest):
-            screen.blit(self._player_icon, pygame.Vector2(80 + x * (self._player_icon_width + 4), 0))
 
     def draw_game_over(self, screen):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
-        text = font.render('GameOver', True, (255, 0, 0))
-        screen.blit(text, pygame.Vector2(0, 0))
-        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(128, 0))
+        text = font.render('Game Over', True, (255, 0, 0))
+        screen_center = app_setting.screen_size * 0.5
+        offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
+        screen.blit(text, screen_center - offset)
 
     def draw_game_clear(self, screen):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
-        text = font.render('GameClear', True, (0, 0, 255))
-        screen.blit(text, pygame.Vector2(0, 0))
-        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(128, 0))
+        text = font.render('Game Clear', True, (0, 0, 255))
+        screen_center = app_setting.screen_size * 0.5
+        offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
+        screen.blit(text, screen_center - offset)
 
     def update_game_objects(self, dt):
         self._manager.update()
@@ -146,6 +141,17 @@ class MainGame(Scene):
         for go in self._manager.instances:
             if go.enabled:
                 go.draw(screen, camera_pos)
+
+    def draw_common_hud(self, screen, dt):
+        font = pygame.font.Font(None, 30)
+        fps_text = font.render(f'tick: {dt}', True, (255, 255, 255))
+        screen.blit(fps_text, pygame.Vector2(app_setting.screen_size.x - 128, 0))
+        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(192, 0))
+        text = font.render(f'Player: ', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(0, 0))
+        for x in range(self._player_rest):
+            screen.blit(self._player_icon, pygame.Vector2(80 + x * (self._player_icon_width + 4), 0))
 
     def on_damaged(self):
         self._player_rest -= 1

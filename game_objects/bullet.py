@@ -6,31 +6,28 @@ from game_objects import game_object
 
 
 class Bullet(game_object.GameObject):
-    def __init__(self):
+    def __init__(self, is_player_bullet):
         super().__init__()
         self.material = None
         self.velocity = pygame.Vector2()
         self.position = pygame.Vector2()
         self._radius = 0
-        self.collider = SphereCollider(pygame.Vector2(), 1, self.on_intersected, CollisionLayer.PlayerShot)
-        self.is_player_bullet = False
+        layer = CollisionLayer.PlayerShot if is_player_bullet else CollisionLayer.EnemyShot
+        self.collider = SphereCollider(pygame.Vector2(), 1, self.on_intersected, layer)
         self.enabled = False
         self._pool = None
-        self._image = None
 
-    def setup(self, position, velocity, size, is_player_bullet, pool):
+        # self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
+        image_path = "resource/image/player_bullet.png" if is_player_bullet else "resource/image/enemy_bullet.png"
+        self._image = pygame.image.load(image_path)
+
+    def setup(self, position, velocity, size, pool):
         self.position = position
         self.velocity = velocity
         self._radius = size.x
-        layer = CollisionLayer.PlayerShot if is_player_bullet else CollisionLayer.EnemyShot
         self.collider.center = self.position
         self.collider.size.x = self._radius
         self.collider.size.y = self._radius
-        self.collider.set_layer(layer)
-
-#        self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
-        image_path = "resource/image/player_bullet.png" if is_player_bullet else "resource/image/enemy_bullet.png"
-        self._image = pygame.image.load(image_path)
         self._pool = pool
 
         self.collider.enabled = True

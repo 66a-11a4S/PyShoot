@@ -9,16 +9,11 @@ class Collider:
         self.enabled = True
         self._manager = ColliderPool()
         self._layer = layer
-        self._layer_value = layer.value[0]
         self._manager.add(self, layer)
 
     @property
-    def layer_value(self):
-        return self._layer_value
-
-    def set_layer(self, layer):
-        self._layer = layer
-        self._layer_value = layer.value[0]
+    def layer(self):
+        return self._layer
 
     def sync_position(self, position):
         self.center = position

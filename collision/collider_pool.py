@@ -22,15 +22,12 @@ class ColliderPool:
 
         return cls._instance
 
-    def __init__(self):
-        for layer in CollisionLayer:
-            self._instance_manager_table[layer] = InstanceManager()
-
     def get_instances(self, layer):
         return self._instance_manager_table[layer].instances
 
     def add(self, instance, layer):
-        return self._instance_manager_table[layer].add(instance)
+        # print(f'add instance to: {layer}')
+        self._instance_manager_table[layer].add(instance)
 
     def remove(self, instance, layer):
         self._instance_manager_table[layer].remove(instance)

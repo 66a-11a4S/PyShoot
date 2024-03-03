@@ -24,7 +24,7 @@ class Player(game_object.GameObject):
         self._intersected_events = []
         self._intersected_events.append(self.damaged)
 
-        self._bullet_pool = ObjectPool(lambda: bullet.Bullet(), init_size=64)
+        self._bullet_pool = ObjectPool(lambda: bullet.Bullet(is_player_bullet=True), init_size=64)
         self._shoot_timer = 0.0
 
         self._recovering = False
@@ -98,7 +98,7 @@ class Player(game_object.GameObject):
 
     def shoot(self, position):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(position), self._bullet_velocity, self._bullet_size, True, self._bullet_pool)
+        instance.setup(pygame.Vector2(position), self._bullet_velocity, self._bullet_size, self._bullet_pool)
 
     def damaged(self):
         self.enabled = False

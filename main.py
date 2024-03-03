@@ -14,13 +14,17 @@ scene_runner.start()
 
 # 前フレームから何ミリ秒経過したか
 dt = 0
+is_running = True
 
-while scene_runner.is_running:
+while is_running:
     # event のポーリング
     for event in pygame.event.get():
         # X を押してウィンドウを閉じられた
         if event.type == pygame.QUIT:
-            running = False
+            is_running = False
+
+    if not is_running:
+        break
 
     # 前のフレームの描画を塗りつぶして消す
     screen.fill(app_setting.bg_fill_color)
@@ -34,5 +38,7 @@ while scene_runner.is_running:
     # このメソッドを毎フレーム呼び出す. 引数を指定するとフレームレートの上限を設定できる.
     # 戻り値: 前回の呼び出しから何秒が経過したか
     dt = clock.tick(app_setting.frame_rate) / 1000
+
+    is_running = scene_runner.is_running
 
 pygame.quit()

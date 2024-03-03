@@ -8,9 +8,9 @@ class Collider:
         self._on_intersected = on_intersected
         self.enabled = True
         self._manager = ColliderPool()
-        self._manager.add(self)
         self._layer = layer
         self._layer_value = layer.value[0]
+        self._manager.add(self, layer)
 
     @property
     def layer_value(self):
@@ -43,4 +43,4 @@ class Collider:
         pass
 
     def dispose(self):
-        self._manager.remove(self)
+        self._manager.remove(self, self._layer)

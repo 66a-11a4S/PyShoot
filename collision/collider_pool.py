@@ -1,3 +1,4 @@
+from collision.collision_layer import CollisionLayer
 from instance_manager import InstanceManager
 
 
@@ -9,21 +10,41 @@ class ColliderPool:
         if cls._instance is None:
             cls._instance = super(ColliderPool, cls).__new__(cls)
             cls._instance_manager = InstanceManager()
+
+            # __new__ メソッド内部では insert ができない
+            cls._instance_manager_table = \
+                {
+                    CollisionLayer.Player: InstanceManager(),
+                    CollisionLayer.PlayerShot: InstanceManager(),
+                    CollisionLayer.Enemy: InstanceManager(),
+                    CollisionLayer.EnemyShot: InstanceManager(),
+                }
+
         return cls._instance
 
-    @property
-    def instances(self):
-        return self._instance_manager.instances
+    def __init__(self):
+        for layer in CollisionLayer:
+            self._instance_manager_table[layer] = InstanceManager()
 
-    def add(self, instance):
-        self._instance_manager.add(instance)
+    def get_instances(self, layer):
+        return self._instance_manager_table[layer].instances
 
-    def remove(self, instance):
-        self._instance_manager.remove(instance)
+    def add(self, instance, layer):
+        return self._instance_manager_table[layer].add(instance)
 
-    def remove_all(self):
-        self._instance_manager.remove_all()
+    def remove(self, instance, layer):
+        self._instance_manager_table[layer].remove(instance)
 
-    def update(self):
-        self._instance_manager.update()
+    def remove_all(self, layer):
+        self._instance_manager_table[layer].remove_all()
 
+    def remove_all_layer(self):
+        for layer in CollisionLayer:
+            self.remove_all(layer)
+
+    def update(self, layer):
+        self._instance_manager_table[layer].update()
+
+    def update_all_layer(self):
+        for layer in CollisionLayer:
+            self.update(layer)

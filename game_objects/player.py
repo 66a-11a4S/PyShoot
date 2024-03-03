@@ -11,6 +11,7 @@ class Player(game_object.GameObject):
     _bullet_velocity = pygame.Vector2(640, 0)
     _move_speed = 256
     _player_recover_time = 3
+    _damaged_alpha = 128
 
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
@@ -79,6 +80,7 @@ class Player(game_object.GameObject):
                 self._recovering = False
                 self._recover_timer = 0
                 self.collider.enabled = True
+                self._image.set_alpha(255)
 
     def update_shoot(self, keys, dt):
         if keys[pygame.K_SPACE]:
@@ -103,6 +105,7 @@ class Player(game_object.GameObject):
     def damaged(self):
         self.enabled = False
         self.collider.enabled = False
+        self._image.set_alpha(self._damaged_alpha)
 
     def start_recover(self):
         self.enabled = True

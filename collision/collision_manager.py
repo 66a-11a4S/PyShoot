@@ -1,4 +1,5 @@
 from collision.collider_pool import ColliderPool
+from collision.collision_layer import CollisionLayer
 
 
 class CollisionManager:
@@ -12,15 +13,20 @@ class CollisionManager:
         ]
 
     def collision_check(self):
-        self._colliders.update()
-        colliders = self._colliders.instances
-        for i in range(len(colliders)):
-            for k in range(i, len(colliders)):
-                if i == k:
-                    continue
+        self._colliders.update_all_layer()
+        for layer_a in CollisionLayer:
+            for layer_b in CollisionLayer:
+                # 衝突をケアするレイヤーどうしで判定
+                if not self._collision_matrix[layer_a.value[0]][layer_b.value[0]]:
+                    return False
 
-                colA = colliders[i]
-                colB = colliders[k]
+                layer_a_instances = self._colliders.get_instances(layer_a)
+                layer_b_instances = self._colliders.get_instances(layer_b)
+                self.collision_check_impl(layer_a_instances, layer_b_instances)
+
+    def collision_check_impl(self, colliders_a, colliders_b):
+        for colA in colliders_a:
+            for colB in colliders_b:
 
                 if not self.need_collision_check(colA, colB):
                     continue
@@ -33,9 +39,13 @@ class CollisionManager:
         if not col_a.enabled or not col_b.enabled:
             return False
 
+        # 自己衝突は無効
+        if col_a == col_b:
+            return False
+
         # col_a.layer.value[0] にアクセスする部分で bottle-neck になっていたのでキャッシュされた value を参照する.
         # python の Enum はクラスだからか?
-        if not self._collision_matrix[col_a.layer_value][col_b.layer_value]:
-            return False
+        # if not self._collision_matrix[col_a.layer_value][col_b.layer_value]:
+        #    return False
 
         return True

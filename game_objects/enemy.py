@@ -23,6 +23,7 @@ class Enemy(game_object.GameObject):
         self._move_pattern = None
         self._shoot_pattern = None
         self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
+        self._sound_destroy = pygame.mixer.Sound("resource/audio/se_main_enemy_destroyed.wav")
 
         self.disable()
 
@@ -61,6 +62,7 @@ class Enemy(game_object.GameObject):
         if collider.layer == CollisionLayer.PlayerShot:
             self._hp -= 1
             if self._hp <= 0:
+                self._sound_destroy.play()
                 self._on_gained_score(self._score)
                 self.disable()
 

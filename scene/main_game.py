@@ -38,6 +38,9 @@ class MainGame(Scene):
         self._player_icon = pygame.image.load("resource/image/player.png")
         self._player_icon_width = self._player_icon.get_width()
 
+        # audio
+        pygame.mixer_music.load("resource/audio/bgm_main.mp3")
+
         self._game_state = None
         self.on_changed_state(StateType.Prepare)
 
@@ -54,6 +57,7 @@ class MainGame(Scene):
     def dispose(self):
         self._manager.remove_all()
         ColliderPool().remove_all_layer()
+        pygame.mixer_music.stop()
 
     def update_game_objects(self, dt):
         self._manager.update()
@@ -97,6 +101,7 @@ class MainGame(Scene):
 
         next_state.setup()
         self._game_state = next_state
+        self.manage_bgm(state)
 
     def create_state(self, state):
         if state is StateType.Prepare:
@@ -107,3 +112,13 @@ class MainGame(Scene):
             return GameEndState(False, self.on_changed_state)
         elif state is StateType.GameClear:
             return GameEndState(True, self.on_changed_state)
+
+    def manage_bgm(self, state):
+        if state is StateType.Running:
+            return
+
+        if state is StateType.Prepare:
+            pygame.mixer_music.play()
+            return
+        else:
+            pygame.mixer_music.stop()

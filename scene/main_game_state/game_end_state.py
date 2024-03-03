@@ -10,6 +10,10 @@ class GameEndState(MainGameState):
         self._message = "Game Clear" if has_cleared else "Game Over"
         self._hud_font = pygame.font.Font(None, 30)
         self._hud_color = pygame.Color(0, 0, 255) if has_cleared else pygame.Color(255, 0, 0)
+        self._sound_jingle = pygame.mixer.Sound("resource/audio/me_main_end.ogg")
+
+    def setup(self):
+        self._sound_jingle.play()
 
     def update(self, dt):
         keys = pygame.key.get_pressed()

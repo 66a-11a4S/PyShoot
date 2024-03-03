@@ -31,6 +31,8 @@ class Player(game_object.GameObject):
         self._recovering = False
         self._recover_timer = 0.0
         self._image = pygame.image.load("resource/image/player.png")
+        self._sound_shot = pygame.mixer.Sound("resource/audio/se_main_player_shot.ogg")
+        self._sound_damage = pygame.mixer.Sound("resource/audio/se_main_player_damage.ogg")
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
@@ -90,6 +92,7 @@ class Player(game_object.GameObject):
                 self.shoot(self.position + pygame.Vector2(16, 8))
                 self.shoot(self.position + pygame.Vector2(16, -16))
                 self.shoot(self.position + pygame.Vector2(16, 16))
+                self._sound_shot.play()
 
             self._shoot_timer += dt
 
@@ -106,6 +109,7 @@ class Player(game_object.GameObject):
         self.enabled = False
         self.collider.enabled = False
         self._image.set_alpha(self._damaged_alpha)
+        self._sound_damage.play()
 
     def start_recover(self):
         self.enabled = True

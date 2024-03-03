@@ -26,7 +26,6 @@ class ColliderPool:
         return self._instance_manager_table[layer].instances
 
     def add(self, instance, layer):
-        # print(f'add instance to: {layer}')
         self._instance_manager_table[layer].add(instance)
 
     def remove(self, instance, layer):

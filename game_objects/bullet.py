@@ -17,7 +17,6 @@ class Bullet(game_object.GameObject):
         self.enabled = False
         self._pool = None
 
-        # self.material = pygame.Color(128, 255, 255) if is_player_bullet else pygame.Color(255, 128, 255)
         image_path = "resource/image/player_bullet.png" if is_player_bullet else "resource/image/enemy_bullet.png"
         self._image = pygame.image.load(image_path)
 
@@ -44,7 +43,6 @@ class Bullet(game_object.GameObject):
         self.position += self.velocity * dt
 
     def draw(self, screen, camera_position):
-        # pygame.draw.circle(screen, self.material, self.position, self._radius)
         view_position = self.position - pygame.Vector2(self._radius, self._radius)
         screen.blit(self._image, view_position)
 

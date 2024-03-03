@@ -54,10 +54,7 @@ class Enemy(game_object.GameObject):
             self.shoot(request)
 
     def draw(self, screen, camera_position):
-        min_pos = self.position - self._size / 2
-        enemy_view_pos = min_pos
-        rect = pygame.Rect(enemy_view_pos.x, enemy_view_pos.y, self._size.x, self._size.y)
-        pygame.draw.rect(screen, self.material, rect)
+        enemy_view_pos = self.position - self._size / 2
         screen.blit(self._image, enemy_view_pos)
 
     def on_intersected(self, collider):

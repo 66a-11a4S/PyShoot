@@ -16,7 +16,9 @@ class InstanceManager:
         self.remove_requested.append(instance)
 
     def remove_all(self):
+        self.remove_requested.clear()
         self.actual_instance.clear()
+        self.add_requested.clear()
 
     def update(self):
         # TODO: Remove が O(n) なので呼び出し頻度次第で代替案を検討

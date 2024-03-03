@@ -1,6 +1,8 @@
 import pygame
 import app_setting
 from enum import Enum
+
+from collision.collider_pool import ColliderPool
 from collision.collision_manager import CollisionManager
 from enemy_patterns.enemy_factory import EnemyFactory
 from game_objects.camera import Camera
@@ -77,6 +79,7 @@ class MainGame(Scene):
 
     def dispose(self):
         self._manager.remove_all()
+        ColliderPool().remove_all_layer()
 
     def update_prepare(self, dt):
         self._prepare_timer += dt

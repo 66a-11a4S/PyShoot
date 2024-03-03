@@ -39,6 +39,10 @@ class MainGame(Scene):
         self._player_rest = 3
         self._player.register_intersected(self.on_damaged)
 
+        # HUD settings
+        self.hud_font = pygame.font.Font(None, 30)
+        self.hud_color = pygame.Color(255, 255, 255)
+
         # HUD elements
         self._prepare_timer = 0.0
         self._total_score = 0
@@ -96,8 +100,7 @@ class MainGame(Scene):
 
     def draw_prepare(self, screen):
         self.draw_game_objects(screen)
-        font = pygame.font.Font(None, 30)
-        text = font.render('Are You Ready?', True, (255, 255, 255))
+        text = self.hud_font.render('Are You Ready?', True, self.hud_color)
         screen_center = app_setting.screen_size * 0.5
         offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
         screen.blit(text, screen_center - offset)
@@ -114,16 +117,14 @@ class MainGame(Scene):
 
     def draw_game_over(self, screen):
         self.draw_game_objects(screen)
-        font = pygame.font.Font(None, 30)
-        text = font.render('Game Over', True, (255, 0, 0))
+        text = self.hud_font.render('Game Over', True, (255, 0, 0))
         screen_center = app_setting.screen_size * 0.5
         offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
         screen.blit(text, screen_center - offset)
 
     def draw_game_clear(self, screen):
         self.draw_game_objects(screen)
-        font = pygame.font.Font(None, 30)
-        text = font.render('Game Clear', True, (0, 0, 255))
+        text = self.hud_font.render('Game Clear', True, (0, 0, 255))
         screen_center = app_setting.screen_size * 0.5
         offset = pygame.Vector2(text.get_width() * 0.5, text.get_height() * 0.5)
         screen.blit(text, screen_center - offset)
@@ -143,12 +144,11 @@ class MainGame(Scene):
                 go.draw(screen, camera_pos)
 
     def draw_common_hud(self, screen, dt):
-        font = pygame.font.Font(None, 30)
-        fps_text = font.render(f'tick: {dt}', True, (255, 255, 255))
+        fps_text = self.hud_font.render(f'tick: {dt}', True, self.hud_color)
         screen.blit(fps_text, pygame.Vector2(app_setting.screen_size.x - 128, 0))
-        text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
+        text = self.hud_font.render(f'Score: {self._total_score}', True, self.hud_color)
         screen.blit(text, pygame.Vector2(192, 0))
-        text = font.render(f'Player: ', True, (255, 255, 255))
+        text = self.hud_font.render(f'Player: ', True, self.hud_color)
         screen.blit(text, pygame.Vector2(0, 0))
         for x in range(self._player_rest):
             screen.blit(self._player_icon, pygame.Vector2(80 + x * (self._player_icon_width + 4), 0))

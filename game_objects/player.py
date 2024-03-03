@@ -37,8 +37,6 @@ class Player(game_object.GameObject):
         self.update_shoot(keys, dt)
 
     def draw(self, screen, camera_position):
-        # mat = pygame.Color(0, 0, 0) if self._recovering else self._material
-        # pygame.draw.circle(screen, mat, self.position, self._shape)
         player_view_position = self.position - pygame.Vector2(self._shape, self._shape)
         screen.blit(self._image, player_view_position)
 
@@ -85,9 +83,11 @@ class Player(game_object.GameObject):
     def update_shoot(self, keys, dt):
         if keys[pygame.K_SPACE]:
             if self._shoot_timer == 0.0:
-                # 2-way shot
+                # 4-way shot
                 self.shoot(self.position + pygame.Vector2(16, -8))
                 self.shoot(self.position + pygame.Vector2(16, 8))
+                self.shoot(self.position + pygame.Vector2(16, -16))
+                self.shoot(self.position + pygame.Vector2(16, 16))
 
             self._shoot_timer += dt
 

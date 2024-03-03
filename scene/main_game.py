@@ -39,8 +39,12 @@ class MainGame(Scene):
         self._player_rest = 3
         self._player.register_intersected(self.on_damaged)
 
+        # HUD elements
         self._prepare_timer = 0.0
         self._total_score = 0
+        self._player_icon = pygame.image.load("resource/image/player.png")
+        self._player_icon_width = self._player_icon.get_width()
+
         self._game_state = MainGame.GameState.Prepare
 
     def update(self, dt):
@@ -105,9 +109,13 @@ class MainGame(Scene):
         self.draw_game_objects(screen)
         font = pygame.font.Font(None, 30)
         fps_text = font.render(f'tick: {dt}', True, (255, 255, 255))
-        screen.blit(fps_text, pygame.Vector2(0, 0))
+        screen.blit(fps_text, pygame.Vector2(app_setting.screen_size.x - 128, 0))
         text = font.render(f'Score: {self._total_score}', True, (255, 255, 255))
-        screen.blit(text, pygame.Vector2(128, 0))
+        screen.blit(text, pygame.Vector2(192, 0))
+        text = font.render(f'Player: ', True, (255, 255, 255))
+        screen.blit(text, pygame.Vector2(0, 0))
+        for x in range(self._player_rest):
+            screen.blit(self._player_icon, pygame.Vector2(80 + x * (self._player_icon_width + 4), 0))
 
     def draw_game_over(self, screen):
         self.draw_game_objects(screen)

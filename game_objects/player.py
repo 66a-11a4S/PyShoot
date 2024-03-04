@@ -4,6 +4,7 @@ from auido.channel_id import ChannelType
 from game_objects import game_object, bullet
 from collision import sphere_collider
 from collision.collision_layer import CollisionLayer
+from input.input_status import InputStatus
 from object_pool import ObjectPool
 
 
@@ -40,9 +41,8 @@ class Player(game_object.GameObject):
         self._sound_damage = pygame.mixer.Sound("resource/audio/se_main_player_damage.ogg")
 
     def update(self, dt):
-        keys = pygame.key.get_pressed()
-        self.update_position(keys, dt)
-        self.update_shoot(keys, dt)
+        self.update_position(dt)
+        self.update_shoot(dt)
 
     def draw(self, screen, camera_position):
         player_view_position = self.position - pygame.Vector2(self._shape, self._shape)
@@ -52,16 +52,16 @@ class Player(game_object.GameObject):
         for func in self._intersected_events:
             func()
 
-    def update_position(self, keys, dt):
+    def update_position(self, dt):
         velocity = pygame.Vector2()
 
-        if keys[pygame.K_w]:
+        if InputStatus().is_pressed(pygame.K_w):
             velocity.y -= self._move_speed * dt
-        if keys[pygame.K_s]:
+        if InputStatus().is_pressed(pygame.K_s):
             velocity.y += self._move_speed * dt
-        if keys[pygame.K_a]:
+        if InputStatus().is_pressed(pygame.K_a):
             velocity.x -= self._move_speed * dt
-        if keys[pygame.K_d]:
+        if InputStatus().is_pressed(pygame.K_d):
             velocity.x += self._move_speed * dt
 
         # プレイヤーが移動できる画面内の領域
@@ -89,8 +89,8 @@ class Player(game_object.GameObject):
                 self.collider.enabled = True
                 self._image.set_alpha(255)
 
-    def update_shoot(self, keys, dt):
-        if keys[pygame.K_SPACE]:
+    def update_shoot(self, dt):
+        if InputStatus().is_pressed(pygame.K_SPACE):
             if self._shoot_timer == 0.0:
                 # 4-way shot
                 self.shoot(self.position + pygame.Vector2(16, -8))

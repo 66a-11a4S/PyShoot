@@ -1,5 +1,6 @@
 import pygame
 from enum import Enum
+from input.input_status import InputStatus
 from scene.scene import Scene
 from scene.scene_type import SceneType
 
@@ -20,17 +21,16 @@ class Title(Scene):
         self._sound_decide = pygame.mixer.Sound("resource/audio/se_system_decide.ogg")
 
     def update(self, dt):
-        keys = pygame.key.get_pressed()
         prev_cursor = self._current_cursor
-        if keys[pygame.K_w]:
+        if InputStatus().is_pressed(pygame.K_w):
             self._current_cursor = max(self._current_cursor - 1, 0)
-        elif keys[pygame.K_s]:
+        elif InputStatus().is_pressed(pygame.K_s):
             self._current_cursor = min(self._current_cursor + 1, Title.Menu.Count.value[0] - 1)
 
         if self._current_cursor is not prev_cursor:
             self._sound_select.play()
 
-        if keys[pygame.K_SPACE]:
+        if InputStatus().is_pressed(pygame.K_SPACE):
             self.execute_command(self._current_cursor)
             self._sound_decide.play()
 

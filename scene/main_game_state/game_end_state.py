@@ -1,6 +1,7 @@
 import pygame
 import app_setting
 from auido.channel_id import ChannelType
+from input.input_status import InputStatus
 from scene.main_game_state.main_game_state import MainGameState
 from scene.main_game_state.state_type import StateType
 
@@ -18,8 +19,7 @@ class GameEndState(MainGameState):
         self._jingle_channel.play(self._sound_jingle)
 
     def update(self, dt):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
+        if InputStatus().is_pressed(pygame.K_ESCAPE):
             self.invoke_next_stage(StateType.End)
 
     def draw(self, screen):

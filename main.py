@@ -1,6 +1,8 @@
 import pygame
 import app_setting
 from auido.channel_id import ChannelType
+from input.input_handler import InputHandler
+from input.input_status import InputStatus
 from scene.scene_runner import SceneRunner
 from scene.scene_type import SceneType
 
@@ -21,12 +23,10 @@ dt = 0
 is_running = True
 
 while is_running:
-    # event のポーリング
-    for event in pygame.event.get():
-        # X を押してウィンドウを閉じられた
-        if event.type == pygame.QUIT:
-            is_running = False
 
+    # 入力イベントの更新
+    InputHandler().update()
+    is_running = not InputStatus().selected_close
     if not is_running:
         break
 

@@ -37,7 +37,8 @@ class StageCoordinator:
 
                 position = pygame.Vector2(x * tile_size, y * tile_size)
                 instance = self._enemy_factory.create(position, enemy_type)
-                self._spawned_enemies.append(instance)
+                if instance is not None:
+                    self._spawned_enemies.append(instance)
 
     # stage を進行させ画面内部に入った敵を生成する
     def progress_stage(self):
@@ -57,7 +58,8 @@ class StageCoordinator:
 
                 position = pygame.Vector2(app_setting.screen_size.x, y * tile_size)
                 instance = self._enemy_factory.create(position, enemy_type)
-                self._spawned_enemies.append(instance)
+                if instance is not None:
+                    self._spawned_enemies.append(instance)
 
         self._before_spawn_column = current_spawn_column
 

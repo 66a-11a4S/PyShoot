@@ -68,7 +68,8 @@ class Enemy(game_object.GameObject):
 
     def shoot(self, vec):
         instance = self._bullet_pool.rent()
-        instance.setup(pygame.Vector2(self.position), vec, self._bullet_size, self._bullet_pool)
+        if instance is not None:
+            instance.setup(pygame.Vector2(self.position), vec, self._bullet_size, self._bullet_pool)
 
     def disable(self):
         self.collider.enabled = False

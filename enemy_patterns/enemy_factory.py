@@ -112,5 +112,8 @@ class EnemyFactory:
         move.setup(owner_position=position, target_position=player_position)
         shoot.setup(owner_position=position, target_position=player_position)
         instance = self._enemy_pool.rent()
+        if instance is None:
+            return None
+
         instance.setup(position, hp, size, score, move_pattern, shoot_pattern, self._on_gained_score, image_path)
         return instance

@@ -1,9 +1,9 @@
 enemy, type, interval, speed, ways, angle
-Horizontal, Straight, 1, 128, 1, 0
-Horizontal2, Straight, 0.5, 192, 3, 15
-Wavy, Straight, 1, 128, 1, 0
-Wavy2, Straight, 0.5, 192, 3, 15
-Chase, TargetCentric, 0.75, 128, 1, 0
-Chase2, TargetCentric, 0.5, 192, 3, 15
-VerticalChase, TargetCentric, 0.75, 128, 1, 0
-VerticalChase2, TargetCentric, 0.5, 192, 3, 15
+Horizontal, Straight, 1,192, 1, 0
+Horizontal2, Straight, 0.5,256, 3, 15
+Wavy, Straight, 1,192, 1, 0
+Wavy2, Straight, 0.5,192,5,30
+Chase, TargetCentric, 0.75,192,3,15
+Chase2, TargetCentric, 0.5, 192,3, 15
+VerticalChase, TargetCentric, 0.75,192, 1, 0
+VerticalChase2, TargetCentric, 0.5,256, 3, 15

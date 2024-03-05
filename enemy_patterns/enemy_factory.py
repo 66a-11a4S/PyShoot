@@ -14,7 +14,7 @@ class EnemyFactory:
         self._on_gained_score = on_gained_score
 
         self._bullet_pool = ObjectPool(lambda: Bullet(is_player_bullet=False), init_size=256)
-        self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool))
+        self._enemy_pool = ObjectPool(lambda: Enemy(self._bullet_pool), init_size=64, max_size=128)
         self._status_table = {}
         self._move_patterns = {}
         self._shoot_patterns = {}

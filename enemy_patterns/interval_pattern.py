@@ -10,3 +10,10 @@ class IntervalPattern:
         clamped_timer = min(self._timer, self._interval)
         self._timer %= self._interval
         return self._func(clamped_timer)
+
+    def reset(self):
+        self._timer = 0
+
+    @property
+    def duration(self):
+        return self._interval

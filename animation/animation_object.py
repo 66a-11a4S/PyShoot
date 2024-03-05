@@ -8,8 +8,11 @@ class AnimationObject(GameObject):
     def __init__(self, animation):
         super().__init__()
         self._animation = animation
+        self.position = pygame.Vector2()
 
-    def start(self):
+    def start(self, position):
+        self.position.x = position.x
+        self.position.y = position.y
         self.enabled = True
         self._animation.play()
 
@@ -20,4 +23,4 @@ class AnimationObject(GameObject):
 
     def draw(self, screen, dt):
         if self._animation.is_playing:
-            screen.blit(self._animation.image, pygame.Vector2(0, 0), self._animation.surface_rect)
+            screen.blit(self._animation.image, self.position, self._animation.surface_rect)

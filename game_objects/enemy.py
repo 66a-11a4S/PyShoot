@@ -18,7 +18,9 @@ class Enemy(game_object.GameObject):
         self._size = pygame.Vector2(0, 0)
         self._disappear_range_margin = self._size
 
-        self.position = pygame.Vector2()
+        # HACK: 生成直後、位置更新前に衝突判定が走ってしまうので画面左上に居るとぶつかるのを避けるため画面外に生成しておく
+        self.position = pygame.Vector2(app_setting.screen_size.x, 0)
+
         self._score = 0
         self._hp = 0
         self._on_gained_score = None

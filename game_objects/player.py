@@ -1,5 +1,7 @@
 import pygame
 
+from animation.animation_object import AnimationObject
+from animation.sprite_animation import SpriteAnimation
 from auido.channel_id import ChannelType
 from game_objects import game_object, bullet
 from collision import sphere_collider
@@ -15,6 +17,7 @@ class Player(game_object.GameObject):
     _move_speed = 256
     _player_recover_time = 3
     _damaged_alpha = 128
+    _boom_animation = AnimationObject(SpriteAnimation("resource/image/player_explode.png", pygame.Vector2(32, 32), 0.5))
 
     def __init__(self, position, scroll_velocity, screen_size):
         super().__init__()
@@ -116,6 +119,7 @@ class Player(game_object.GameObject):
         self.collider.enabled = False
         self._image.set_alpha(self._damaged_alpha)
         self._sound_damage.play()
+        self._boom_animation.start(self.position)
 
     def start_recover(self):
         self.enabled = True

@@ -1,4 +1,4 @@
-from scene.Title import Title
+from scene.title import Title
 from scene.main_game import MainGame
 from scene.scene_type import SceneType
 

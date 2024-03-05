@@ -1,7 +1,7 @@
 import pygame
 import app_setting
 from enemy_patterns.enemy_type import EnemyType
-from stage.Field import Field
+from stage.field import Field
 
 
 class StageCoordinator:

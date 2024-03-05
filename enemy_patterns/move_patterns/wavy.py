@@ -9,7 +9,7 @@ class Wavy(MovePattern):
         super().__init__()
         self._horizontal_speed = horizontal_speed
         self._amp = amp
-        self.interval = duration
+        self._interval = duration
 
     def move(self, timer):
         y = math.sin(timer / self.interval * math.pi * 2) * self._amp

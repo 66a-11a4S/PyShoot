@@ -7,13 +7,13 @@ class Chase(MovePattern):
     def __init__(self, speed, stop_distance):
         super().__init__()
         self._speed = speed
-        self.stop_distance = stop_distance
+        self._stop_distance = stop_distance
 
     def move(self, _):
         vec = self._target_position - self._owner_position
         length = vec.length()
         # 停止位置を通り越して止まりそうなら、停止位置までの移動速度に丸める
-        if length < self.stop_distance:
+        if length < self._stop_distance:
             return pygame.Vector2(0, 0)
 
         return vec.normalize() * self._speed

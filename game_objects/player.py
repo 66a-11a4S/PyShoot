@@ -19,12 +19,10 @@ class Player(game_object.GameObject):
     _damaged_alpha = 128
     _boom_animation = AnimationObject(SpriteAnimation("resource/image/player_explode.png", pygame.Vector2(32, 32), 0.5))
 
-    def __init__(self, position, scroll_velocity, screen_size):
+    def __init__(self, position, screen_size):
         super().__init__()
         self.position = position
-        self._material = pygame.Color(128, 128, 255)
         self._shape = 16  # circle radius
-        self._scroll_velocity = scroll_velocity
         self._move_boundary = screen_size
         self.collider = sphere_collider.SphereCollider(self.position, self._shape, self.on_intersected,
                                                        CollisionLayer.Player)

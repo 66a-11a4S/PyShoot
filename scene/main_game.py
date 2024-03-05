@@ -21,9 +21,8 @@ class MainGame(Scene):
         # instance settings
         self._manager = GameObjectManager()
         self._collision_manager = CollisionManager()
-        self._camera = Camera(pygame.Vector2(0, 0), app_setting.screen_size)
-        self._player = Player(pygame.Vector2(app_setting.screen_size / 2), self._camera.scroll_velocity,
-                              app_setting.screen_size)
+        self._camera = Camera(pygame.Vector2(0, 0))
+        self._player = Player(pygame.Vector2(app_setting.screen_size / 2), app_setting.screen_size)
 
         # player settings
         self._player_rest = 3

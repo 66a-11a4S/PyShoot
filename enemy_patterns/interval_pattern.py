@@ -12,7 +12,7 @@ class IntervalPattern:
         return self._func(clamped_timer)
 
     def reset(self):
-        self._timer = 0
+        self._timer = 0.0
 
     @property
     def duration(self):

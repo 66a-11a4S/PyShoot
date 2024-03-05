@@ -8,7 +8,6 @@ from game_objects import game_object
 class Bullet(game_object.GameObject):
     def __init__(self, is_player_bullet):
         super().__init__()
-        self.material = None
         self.velocity = pygame.Vector2()
         self.position = pygame.Vector2()
         self._radius = 0

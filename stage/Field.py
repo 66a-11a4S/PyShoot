@@ -4,7 +4,7 @@ from enemy_patterns.enemy_type import EnemyType
 
 class Field:
     def __init__(self, tiles):
-        self.progress = 0
+        self.progress = -app_setting.screen_size.x  # 1画面分、進行方向から反対側にスクロールした状態でスタート
         self._tiles = tiles
         self.col_count = len(self._tiles[0])
         self.row_count = app_setting.screen_size.y // app_setting.tile_size

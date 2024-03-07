@@ -3,7 +3,7 @@ import pygame
 
 frame_rate = 60
 screen_size = pygame.Vector2(640, 480)
-bg_fill_color = pygame.Color(128, 128, 128)
+bg_fill_color = pygame.Color(0, 0, 64)
 tile_size = 32
 
 

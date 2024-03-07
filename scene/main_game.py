@@ -3,6 +3,7 @@ import app_setting
 
 from collision.collider_pool import ColliderPool
 from collision.collision_manager import CollisionManager
+from game_objects.background import Background
 from game_objects.camera import Camera
 from game_objects.game_object_manager import GameObjectManager
 from game_objects.player import Player
@@ -22,6 +23,7 @@ class MainGame(Scene):
         self._manager = GameObjectManager()
         self._collision_manager = CollisionManager()
         self._camera = Camera(pygame.Vector2(0, 0))
+        self._background = Background(scroll_speed=100)
         self._player = Player(pygame.Vector2(app_setting.screen_size / 2), app_setting.screen_size)
 
         # player settings
@@ -49,9 +51,9 @@ class MainGame(Scene):
             self.update_game_objects(dt)
 
     def draw(self, screen, dt):
-        self.draw_common_hud(screen, dt)
-        self._game_state.draw(screen)
         self.draw_game_objects(screen)
+        self._game_state.draw(screen)
+        self.draw_common_hud(screen, dt)
 
     def dispose(self):
         self._manager.remove_all()

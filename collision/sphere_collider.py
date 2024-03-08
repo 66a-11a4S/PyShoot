@@ -22,7 +22,7 @@ class SphereCollider(collider.Collider):
 
     def intersected_with_sphere(self, sphere):
         vec = (sphere.center - self.center)
-        return vec.length() <= (sphere._radius + self._radius)
+        return vec.length() <= (sphere.radius + self._radius)
 
     def intersected_with_rect(self, rect):
         closest_point_on_rect = rect.closest_position(self.center)
@@ -31,3 +31,7 @@ class SphereCollider(collider.Collider):
 
     def debug_draw(self, screen):
         pygame.draw.circle(screen, center=self.center, radius=self._radius, color=pygame.Color(128, 128, 255))
+
+    @property
+    def radius(self):
+        return self._radius

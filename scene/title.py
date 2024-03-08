@@ -56,4 +56,3 @@ class Title(Scene):
             self.change_scene(SceneType.Main)
         if cursor_pos == Title.Menu.Exit.value[0]:
             self.change_scene(SceneType.Quit)
-

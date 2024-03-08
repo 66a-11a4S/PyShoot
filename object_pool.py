@@ -40,4 +40,4 @@ class ObjectPool:
             self.not_used.append(instance)
             self.current_size += 1
 
-        print(f"pool extended: {self.current_size}")
+        # print(f"pool extended: {self.current_size}")

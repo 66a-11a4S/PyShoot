@@ -36,7 +36,7 @@ class MainGame(Scene):
 
         # HUD elements
         self._total_score = 0
-        self._player_icon = pygame.image.load("resource/image/player.png")
+        self._player_icon = pygame.image.load("resource/image/player_icon.png")
         self._player_icon_width = self._player_icon.get_width()
 
         # audio

@@ -57,13 +57,16 @@ class Player(game_object.GameObject):
         velocity = pygame.Vector2()
 
         if InputStatus().is_pressed(pygame.K_w):
-            velocity.y -= self._move_speed * dt
+            velocity.y = -1
         if InputStatus().is_pressed(pygame.K_s):
-            velocity.y += self._move_speed * dt
+            velocity.y = 1
         if InputStatus().is_pressed(pygame.K_a):
-            velocity.x -= self._move_speed * dt
+            velocity.x = -1
         if InputStatus().is_pressed(pygame.K_d):
-            velocity.x += self._move_speed * dt
+            velocity.x = 1
+
+        if 0.01 < velocity.length():
+            velocity = velocity.normalize() * self._move_speed * dt
 
         # プレイヤーが移動できる画面内の領域
         boundary_max = self._move_boundary

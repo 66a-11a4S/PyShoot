@@ -1,2 +1,2 @@
 # PyShoot
-A shooting game building with pygame
+Python の学習を目的とした pygame 製シューティングゲーム

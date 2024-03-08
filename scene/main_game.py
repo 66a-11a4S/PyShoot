@@ -1,5 +1,6 @@
 import pygame
 import app_setting
+from auido import audio_source
 
 from collision.collider_pool import ColliderPool
 from collision.collision_manager import CollisionManager
@@ -40,7 +41,7 @@ class MainGame(Scene):
         self._player_icon_width = self._player_icon.get_width()
 
         # audio
-        pygame.mixer_music.load("resource/audio/bgm_main.mp3")
+        self._bgm = audio_source.AudioSource("resource/audio/bgm_main.mp3")
 
         self._game_state = None
         self.on_changed_state(StateType.Prepare)
@@ -58,7 +59,7 @@ class MainGame(Scene):
     def dispose(self):
         self._manager.remove_all()
         ColliderPool().remove_all_layer()
-        pygame.mixer_music.stop()
+        self._bgm.stop()
 
     def update_game_objects(self, dt):
         self._manager.update()
@@ -119,7 +120,7 @@ class MainGame(Scene):
             return
 
         if state is StateType.Prepare:
-            pygame.mixer_music.play()
+            self._bgm.play()
             return
         else:
-            pygame.mixer_music.stop()
+            self._bgm.stop()

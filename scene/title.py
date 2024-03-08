@@ -1,5 +1,7 @@
 import pygame
 from enum import Enum
+
+from auido import audio_source
 from input.input_status import InputStatus
 from scene.scene import Scene
 from scene.scene_type import SceneType
@@ -17,8 +19,8 @@ class Title(Scene):
         self._title_font = pygame.font.Font(None, 64)
         self._content_font = pygame.font.Font(None, 30)
         self._font_color = pygame.Color(255, 255, 255)
-        self._sound_select = pygame.mixer.Sound("resource/audio/se_system_select.ogg")
-        self._sound_decide = pygame.mixer.Sound("resource/audio/se_system_decide.ogg")
+        self._sound_select = audio_source.AudioSource("resource/audio/se_system_select.ogg")
+        self._sound_decide = audio_source.AudioSource("resource/audio/se_system_decide.ogg")
 
     def update(self, dt):
         prev_cursor = self._current_cursor

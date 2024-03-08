@@ -2,6 +2,7 @@ import pygame
 import app_setting
 from animation.animation_object import AnimationObject
 from animation.sprite_animation import SpriteAnimation
+from auido import audio_source
 from game_objects import game_object
 from collision import box_collider
 from collision.collision_layer import CollisionLayer
@@ -27,7 +28,7 @@ class Enemy(game_object.GameObject):
         self._move_pattern = None
         self._shoot_pattern = None
         self.collider = box_collider.BoxCollider(self.position, self._size, self.on_intersected, CollisionLayer.Enemy)
-        self._sound_destroy = pygame.mixer.Sound("resource/audio/se_main_enemy_destroyed.wav")
+        self._sound_destroy = audio_source.AudioSource("resource/audio/se_main_enemy_destroyed.wav")
         self._boom_animation = AnimationObject(SpriteAnimation("resource/image/enemy_explode.png",
                                                                pygame.Vector2(32, 32), 0.5))
 

@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import auto, IntEnum
 
 
 # 1チャンネルで1音だけ鳴らせるので、1音ずつ鳴らしたい種類を定義
-class ChannelType(Enum):
-    System = 0,
-    PlayerShot = 1,
-    ReservedChannels = 2,
+class ChannelType(IntEnum):
+    System = 0
+    PlayerShot = auto()
+    ReservedChannels = auto()

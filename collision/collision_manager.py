@@ -17,7 +17,7 @@ class CollisionManager:
         for layer_a in CollisionLayer:
             for layer_b in CollisionLayer:
                 # 衝突をケアするレイヤーどうしで判定
-                if not self._collision_matrix[layer_a.value[0]][layer_b.value[0]]:
+                if not self._collision_matrix[layer_a.value][layer_b.value]:
                     continue
 
                 layer_a_instances = self._colliders.get_instances(layer_a)

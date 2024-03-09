@@ -38,7 +38,7 @@ class Player(game_object.GameObject):
         self._image = pygame.image.load("resource/image/player.png")
 
         # 自弾の連射音で他のチャンネルを埋めないようにする
-        self._sound_shot_channel = pygame.mixer.Channel(ChannelType.PlayerShot.value[0])
+        self._sound_shot_channel = pygame.mixer.Channel(ChannelType.PlayerShot.value)
         self._sound_shot = audio_source.AudioSource("resource/audio/se_main_player_shot.wav")
         self._sound_damage = audio_source.AudioSource("resource/audio/se_main_player_damage.ogg")
 

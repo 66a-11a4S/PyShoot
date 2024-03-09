@@ -41,7 +41,7 @@ class EnemyFactory:
                 size = get_value(parameter, 2)
                 score = get_value(parameter, 3)
                 image_path = parameter[4]
-                self._status_table[enemy_type.value[0]] = (hp, size, score, image_path)
+                self._status_table[enemy_type.value] = (hp, size, score, image_path)
 
         with open("resource/master_data/enemy_move_pattern.csv") as f:
             for enemy_type in EnemyType:
@@ -70,7 +70,7 @@ class EnemyFactory:
                 elif move_type == "VerticalChase":
                     move_pattern = vertical_chase.VerticalChase(speed, vertical_speed)
 
-                self._move_patterns[enemy_type.value[0]] = move_pattern
+                self._move_patterns[enemy_type.value] = move_pattern
 
         with open("resource/master_data/enemy_shoot_pattern.csv") as f:
             for enemy_type in EnemyType:
@@ -94,7 +94,7 @@ class EnemyFactory:
                 elif shoot_type == "TargetCentric":
                     shoot_pattern = target_centric.TargetCentric(speed, interval, ways, angle)
 
-                self._shoot_patterns[enemy_type.value[0]] = shoot_pattern
+                self._shoot_patterns[enemy_type.value] = shoot_pattern
 
     def create(self, position, enemy_type):
         hp = self._status_table[enemy_type][0]

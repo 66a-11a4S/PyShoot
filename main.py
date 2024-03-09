@@ -12,7 +12,7 @@ screen = pygame.display.set_mode(app_setting.screen_size)
 clock = pygame.time.Clock()  # アプリケーションの時間進行を監視するオブジェクトを作成
 
 # 優先して鳴らしたい音のチャンネル数を事前に確保し、確実に優先音が鳴るようにしておく
-pygame.mixer.set_reserved(ChannelType.ReservedChannels.value[0])
+pygame.mixer.set_reserved(ChannelType.ReservedChannels.value)
 
 scene_runner = SceneRunner()
 scene_runner.request_change_scene(SceneType.Title)

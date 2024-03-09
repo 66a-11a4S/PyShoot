@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import IntEnum, auto
 
 
-class CollisionLayer(Enum):
-    Player = 0,
-    PlayerShot = 1,
-    Enemy = 2,
-    EnemyShot = 3,  # 末尾に ',' をつけないと tuple ではなく int とみなされる
+class CollisionLayer(IntEnum):
+    Player = 0
+    PlayerShot = auto()
+    Enemy = auto()
+    EnemyShot = auto()  # 末尾に ',' をつけないと tuple ではなく int とみなされる

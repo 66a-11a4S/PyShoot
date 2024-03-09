@@ -39,7 +39,7 @@ class StageCoordinator:
             # 右端の列を全て読み込み、敵が居れば生成する
             for y in range(self._row_count):
                 enemy_type = self._field.get_tile_value(current_spawn_column, y)
-                if enemy_type == EnemyType.Blank.value[0]:
+                if enemy_type == EnemyType.Blank.value:
                     continue
 
                 position = pygame.Vector2(app_setting.screen_size.x, y * tile_size)

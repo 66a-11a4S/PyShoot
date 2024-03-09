@@ -1,5 +1,5 @@
 import pygame
-from enum import Enum
+from enum import IntEnum, auto
 
 from auido import audio_source
 from input.input_status import InputStatus
@@ -8,10 +8,10 @@ from scene.scene_type import SceneType
 
 
 class Title(Scene):
-    class Menu(Enum):
-        Start = 0,
-        Exit = 1,
-        Count = 2,
+    class Menu(IntEnum):
+        Start = 0
+        Exit = auto()
+        Count = auto()
 
     def __init__(self, change_scene_impl):
         super().__init__(change_scene_impl)
@@ -27,7 +27,7 @@ class Title(Scene):
         if InputStatus().is_pressed(pygame.K_w):
             self._current_cursor = max(self._current_cursor - 1, 0)
         elif InputStatus().is_pressed(pygame.K_s):
-            self._current_cursor = min(self._current_cursor + 1, Title.Menu.Count.value[0] - 1)
+            self._current_cursor = min(self._current_cursor + 1, Title.Menu.Count.value - 1)
 
         if self._current_cursor is not prev_cursor:
             self._sound_select.play()
@@ -50,11 +50,11 @@ class Title(Scene):
                 continue
 
             menu_text = self._content_font.render(menu.name, True, self._font_color)
-            menu_position = pygame.Vector2(300, 192) + menu.value[0] * pygame.Vector2(0, 64)
+            menu_position = pygame.Vector2(300, 192) + menu.value * pygame.Vector2(0, 64)
             screen.blit(menu_text, menu_position)
 
     def execute_command(self, cursor_pos):
-        if cursor_pos == Title.Menu.Start.value[0]:
+        if cursor_pos == Title.Menu.Start.value:
             self.change_scene(SceneType.Main)
-        if cursor_pos == Title.Menu.Exit.value[0]:
+        if cursor_pos == Title.Menu.Exit.value:
             self.change_scene(SceneType.Quit)

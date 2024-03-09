@@ -20,7 +20,7 @@ class Field:
 
     def get_tile_value(self, x, y):
         if x < 0 or self.col_count <= x:
-            return EnemyType.Blank.value[0]
+            return EnemyType.Blank.value
         if y < 0 or self.row_count <= y:
-            return EnemyType.Blank.value[0]
+            return EnemyType.Blank.value
         return self._tiles[y][x]

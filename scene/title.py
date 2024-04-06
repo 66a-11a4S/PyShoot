@@ -33,7 +33,7 @@ class Title(Scene):
             self._sound_select.play()
 
         if InputStatus().is_pressed(pygame.K_SPACE):
-            self.execute_command(self._current_cursor)
+            self._execute_command(self._current_cursor)
             self._sound_decide.play()
 
     def draw(self, screen, dt):
@@ -53,7 +53,7 @@ class Title(Scene):
             menu_position = pygame.Vector2(300, 192) + menu.value * pygame.Vector2(0, 64)
             screen.blit(menu_text, menu_position)
 
-    def execute_command(self, cursor_pos):
+    def _execute_command(self, cursor_pos):
         if cursor_pos == Title.Menu.Start.value:
             self.change_scene(SceneType.Main)
         if cursor_pos == Title.Menu.Exit.value:

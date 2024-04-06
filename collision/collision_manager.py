@@ -22,19 +22,19 @@ class CollisionManager:
 
                 layer_a_instances = self._colliders.get_instances(layer_a)
                 layer_b_instances = self._colliders.get_instances(layer_b)
-                self.collision_check_impl(layer_a_instances, layer_b_instances)
+                self._collision_check_impl(layer_a_instances, layer_b_instances)
 
-    def collision_check_impl(self, colliders_a, colliders_b):
+    def _collision_check_impl(self, colliders_a, colliders_b):
         for colA in colliders_a:
             for colB in colliders_b:
-                if not self.need_collision_check(colA, colB):
+                if not self._need_collision_check(colA, colB):
                     continue
 
                 if colA.intersected(colB):
                     colA.invoke_intersected(colB)
                     colB.invoke_intersected(colA)
 
-    def need_collision_check(self, col_a, col_b):
+    def _need_collision_check(self, col_a, col_b):
         if not col_a.enabled or not col_b.enabled:
             return False
 
